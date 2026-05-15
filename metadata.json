@@ -1,0 +1,7 @@
+{
+  "name": "Remix: Bat Quai \u0026 Linh Phuong",
+  "description": "Ung dung tra cuu Bat Quai, Tu Vi, Tu Tru, Gieo Que, Xem Ngay va Ky Mon Don Giap.",
+  "requestFramePermissions": [
+    "microphone"
+  ]
+}

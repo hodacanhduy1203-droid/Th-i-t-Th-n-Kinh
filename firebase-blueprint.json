@@ -1,0 +1,39 @@
+{
+  "entities": {
+    "access_code": {
+      "title": "Access Code",
+      "description": "Codes that grant users access to use the system AI key",
+      "type": "object",
+      "properties": {
+        "code": { "type": "string", "description": "The actual access code" },
+        "active": { "type": "boolean", "description": "Whether the code is still valid" },
+        "owner": { "type": "string", "description": "Identifier of who this code was given to" },
+        "uses": { "type": "number", "description": "Number of times this code has been used" },
+        "createdAt": { "type": "string", "format": "date-time", "description": "When the code was created" },
+        "max_uses": { "type": "number", "description": "Optional limit on uses" },
+        "lastUsed": { "type": "string", "format": "date-time", "description": "Last time this code was used" }
+      },
+      "required": ["code", "active", "uses", "createdAt"]
+    },
+    "admin": {
+      "title": "Admin Record",
+      "description": "Identifies users with administrative privileges",
+      "type": "object",
+      "properties": {
+        "email": { "type": "string" },
+        "role": { "type": "string", "enum": ["admin", "super-admin"] }
+      },
+      "required": ["email", "role"]
+    }
+  },
+  "firestore": {
+    "access_codes/{codeId}": {
+      "schema": "access_code",
+      "description": "Collection of access codes"
+    },
+    "admins/{userId}": {
+      "schema": "admin",
+      "description": "Collection of admin users"
+    }
+  }
+}

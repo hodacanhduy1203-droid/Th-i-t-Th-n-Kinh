@@ -1,0 +1,89 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // 0. Global Safety Net
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // Phase 3: Primitives
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isEmailVerified() {
+      return isSignedIn() && request.auth.token.email_verified == true;
+    }
+
+    function isValidId(id) {
+      return id is string && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+
+    function incoming() {
+      return request.resource.data;
+    }
+
+    function existing() {
+      return resource.data;
+    }
+
+    function isSuperAdmin() {
+      // Hardcoded super-admin from codebase
+      return isEmailVerified() && request.auth.token.email == 'hodacanhduy1203@gmail.com';
+    }
+
+    function isAdmin() {
+      return isSuperAdmin() || (isSignedIn() && exists(/databases/$(database)/documents/admins/$(request.auth.uid)));
+    }
+
+    // Phase 4: Validation Helpers
+    function isValidAccessCode(data) {
+      return data.code is string && data.code.size() <= 100 &&
+             data.active is bool &&
+             data.uses is int && data.uses >= 0 &&
+             (data.get('owner', 'Anonymous') is string && data.get('owner', 'Anonymous').size() <= 200) &&
+             (data.get('max_uses', 0) is int) &&
+             data.createdAt is timestamp;
+    }
+
+    function isValidAdminRecord(data) {
+      return data.email is string && data.email.size() <= 200 &&
+             data.role in ['admin', 'super-admin'];
+    }
+
+    // Collections
+    match /admins/{userId} {
+      allow get: if isAdmin();
+      allow list: if isSuperAdmin();
+      allow create, update, delete: if isSuperAdmin();
+    }
+
+    match /access_codes/{codeId} {
+      allow read, write: if isAdmin() && isValidId(codeId);
+      
+      // Specifically for internal validation if we ever add it (presently only AdminModal uses it)
+      // allow get: if isSignedIn() && isValidId(codeId); 
+
+      allow create: if isAdmin() && 
+                      incoming().code == codeId &&
+                      isValidAccessCode(incoming()) &&
+                      incoming().keys().hasAll(['code', 'active', 'uses', 'createdAt']) &&
+                      incoming().keys().size() >= 4;
+
+      allow update: if isAdmin() && 
+                      isValidAccessCode(incoming()) &&
+                      (
+                        // Action: Toggle Active
+                        (incoming().diff(existing()).affectedKeys().hasOnly(['active'])) ||
+                        // Action: Update Metadata
+                        (incoming().diff(existing()).affectedKeys().hasOnly(['owner', 'max_uses'])) ||
+                        // Action: Increment Uses (Self-update bypass or dedicated action)
+                        (incoming().diff(existing()).affectedKeys().hasOnly(['uses', 'lastUsed']))
+                      ) &&
+                      incoming().code == existing().code &&
+                      incoming().createdAt == existing().createdAt;
+
+      allow delete: if isAdmin();
+    }
+  }
+}

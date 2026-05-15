@@ -1,0 +1,90 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+  --font-serif: "Playfair Display", ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
+}
+
+@layer base {
+  body {
+    @apply bg-[#F8F9FA] text-[#1A1A1A] antialiased;
+  }
+}
+
+@layer utilities {
+  .scrollbar-hide, .hide-scrollbar {
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+  }
+  .scrollbar-hide::-webkit-scrollbar, .hide-scrollbar::-webkit-scrollbar {
+    display: none; /* Chrome, Safari and Opera */
+  }
+}
+
+
+@layer components {
+  .scientific-grid {
+    @apply border border-gray-200 bg-white shadow-sm;
+  }
+  
+  .scientific-cell {
+    @apply border-r border-b border-gray-100 p-2 text-center;
+  }
+  
+  .scientific-label {
+    @apply text-[10px] font-bold text-gray-400 uppercase tracking-widest;
+  }
+  
+  .scientific-value {
+    @apply font-mono text-sm font-medium;
+  }
+
+  .markdown-body p {
+    margin-top: 2px;
+    margin-bottom: 2px;
+    line-height: 1.4;
+  }
+
+  .markdown-body h1, .markdown-body h2, .markdown-body h3, .markdown-body h4 {
+    margin-top: 8px;
+    margin-bottom: 2px;
+    font-weight: 800;
+  }
+
+  .markdown-body ul, .markdown-body ol {
+    margin-top: 2px;
+    margin-bottom: 2px;
+    padding-left: 16px;
+  }
+
+  .markdown-body li {
+    margin-top: 1px;
+    margin-bottom: 1px;
+  }
+}
+
+html, body {
+  overscroll-behavior: none;
+  height: 100%;
+  overflow: hidden;
+  position: fixed;
+  width: 100%;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+#root {
+  height: 100%;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: none;
+  touch-action: pan-x pan-y;
+}
+
+@layer utilities {
+  .transform-style-3d {
+    transform-style: preserve-3d;
+  }
+}
