@@ -145,7 +145,7 @@ export const TuViCell: React.FC<TuViCellProps> = ({ label, isThan, zodiac, canCh
       
       {/* Footer Area with inline Label */}
       <div className="mt-auto flex flex-col pt-1 z-20 w-full bg-white/98 shadow-[-2px_-4px_8px_rgba(0,0,0,0.02)] rounded-t-lg">
-        <div className={`text-[16px] sm:text-[18px] font-black uppercase tracking-[0.1em] text-center truncate mb-0.5 transition-all ${(label || '').normalize('NFD').replace(/[\u0300-\u036f]/g, "").toUpperCase().includes('MENH') ? '!text-red-600 scale-105' : 'text-amber-950'}`}>
+        <div className="text-[13px] md:text-[14px] font-black uppercase tracking-[0.05em] text-center truncate mb-0.5 text-black">
           {label}
         </div>
         

@@ -7,6 +7,7 @@ import { geminiService } from '../services/geminiService';
 import { GEMINI_MODEL } from '../constants/ai';
 import Markdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
+import { setupSpeechSynthesis, cancelSpeech, speakText as speakTextHelper } from '../lib/speech';
 
 interface Message {
   id: string;
@@ -38,62 +39,23 @@ export const AIChatAssistant: React.FC<AIChatAssistantProps> = ({ userProfile, o
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    // Warm up voices
-    if ("speechSynthesis" in window) {
-      window.speechSynthesis.getVoices();
-    }
-    return () => {
-      if ("speechSynthesis" in window) {
-        window.speechSynthesis.cancel();
-      }
-    };
+    setupSpeechSynthesis();
+    return () => cancelSpeech();
   }, []);
 
   const speakText = (text: string, id: string) => {
-    if (!("speechSynthesis" in window)) {
-      alert("Trình duyệt của bạn không hỗ trợ tính năng đọc văn bản.");
+    if (speakingId === id) {
+      cancelSpeech();
+      setSpeakingId(null);
       return;
     }
 
-    if (speakingId === id) {
-      window.speechSynthesis.cancel();
-      setSpeakingId(null);
-    } else {
-      window.speechSynthesis.cancel();
-      const plainText = text
-        .replace(/[*_#`\[\]]/g, "")
-        .replace(/<[^>]+>/g, "")
-        .replace(/(\r\n|\n|\r)/gm, " ")
-        .trim();
-
-      const utterance = new SpeechSynthesisUtterance(plainText);
-
-      // Select Vietnamese voice if available
-      const voices = window.speechSynthesis.getVoices();
-      const viVoice = voices.find((v) => v.lang.toLowerCase().includes("vi"));
-      if (viVoice) {
-        utterance.voice = viVoice;
-      }
-      utterance.lang = "vi-VN";
-      utterance.rate = 1.0;
-      utterance.pitch = 1.0;
-      utterance.volume = 1.0;
-
-      utterance.onstart = () => {
-        setSpeakingId(id);
-      };
-
-      utterance.onend = () => {
-        setSpeakingId(null);
-      };
-
-      utterance.onerror = (e) => {
-        console.error("Speech Error:", e);
-        setSpeakingId(null);
-      };
-
-      window.speechSynthesis.speak(utterance);
-    }
+    speakTextHelper(
+      text,
+      () => setSpeakingId(id),
+      () => setSpeakingId(null),
+      () => setSpeakingId(null)
+    );
   };
 
   const scrollToBottom = () => {

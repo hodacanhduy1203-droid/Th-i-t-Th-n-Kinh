@@ -1,4 +1,5 @@
 import { handleAIError } from "../utils/aiErrorHandler";
+import { sanitizeApiContents } from "../utils/aiHelpers";
 import React, { useState, useEffect, useRef, useMemo } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import {
@@ -21,6 +22,7 @@ import jsPDF from "jspdf";
 import { toCanvas } from "html-to-image";
 import { MEDICAL_DATA } from "../constants/medicalData";
 import { Lunar } from "lunar-javascript";
+import { setupSpeechSynthesis, cancelSpeech, speakText as speakTextHelper } from '../lib/speech';
 import { getAI } from "../services/aiService";
 import { GEMINI_MODEL, PRO_MODEL } from "../constants/ai";
 import Markdown from "react-markdown";
@@ -928,62 +930,23 @@ export function ThaiToTab({
   const chatEndRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    // Warm up voices
-    if ("speechSynthesis" in window) {
-      window.speechSynthesis.getVoices();
-    }
-    return () => {
-      if ("speechSynthesis" in window) {
-        window.speechSynthesis.cancel();
-      }
-    };
+    setupSpeechSynthesis();
+    return () => cancelSpeech();
   }, []);
 
   const speakText = (text: string, index: number) => {
-    if (!("speechSynthesis" in window)) {
-      alert("Trình duyệt của bạn không hỗ trợ tính năng đọc văn bản.");
+    if (speakingIndex === index) {
+      cancelSpeech();
+      setSpeakingIndex(null);
       return;
     }
 
-    if (speakingIndex === index) {
-      window.speechSynthesis.cancel();
-      setSpeakingIndex(null);
-    } else {
-      window.speechSynthesis.cancel();
-      const plainText = text
-        .replace(/[*_#`\[\]]/g, "")
-        .replace(/<[^>]+>/g, "")
-        .replace(/(\r\n|\n|\r)/gm, " ")
-        .trim();
-
-      const utterance = new SpeechSynthesisUtterance(plainText);
-
-      // Select Vietnamese voice if available
-      const voices = window.speechSynthesis.getVoices();
-      const viVoice = voices.find((v) => v.lang.toLowerCase().includes("vi"));
-      if (viVoice) {
-        utterance.voice = viVoice;
-      }
-      utterance.lang = "vi-VN";
-      utterance.rate = 1.0;
-      utterance.pitch = 1.0;
-      utterance.volume = 1.0;
-
-      utterance.onstart = () => {
-        setSpeakingIndex(index);
-      };
-
-      utterance.onend = () => {
-        setSpeakingIndex(null);
-      };
-
-      utterance.onerror = (e) => {
-        console.error("Speech Error:", e);
-        setSpeakingIndex(null);
-      };
-
-      window.speechSynthesis.speak(utterance);
-    }
+    speakTextHelper(
+      text,
+      () => setSpeakingIndex(index),
+      () => setSpeakingIndex(null),
+      () => setSpeakingIndex(null)
+    );
   };
 
   useEffect(() => {
@@ -1039,11 +1002,7 @@ ${pulseDetails}`;
       const displayUserMsg =
         questionToUse || "Luận giải tổng quan đồ bản hiện tại.";
 
-      const apiContents = thaiToChat.map((msg) => ({
-        role: msg.role,
-        parts: [{ text: msg.text }],
-      }));
-      apiContents.push({ role: "user", parts: [{ text: userPrompt }] });
+      const apiContents = sanitizeApiContents(thaiToChat, userPrompt);
 
       setThaiToChat((prev) => [
         ...prev,

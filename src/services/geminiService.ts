@@ -63,9 +63,19 @@ MỆNH LỆNH CỐT LÕI MỚI:
       // We clear it entirely to avoid breaking user/model alternating constraints.
       // Reduced to 20 for more aggressive cleanup to save tokens/quota
       if (this.history.length > 20) {
-        // Keep only top instructions vibes and last few messages
-        const lastFew = this.history.slice(-10);
-        this.history = lastFew;
+        let startIndex = this.history.length - 10;
+        // History array must start with 'user' and ideally not a function response 
+        // to maintain proper chat flow
+        while (startIndex < this.history.length) {
+            const msg = this.history[startIndex];
+            if (msg.role === 'user' && msg.parts && !msg.parts.some((p: any) => p.functionResponse)) {
+                break;
+            }
+            startIndex++;
+        }
+        // Fallback in case we didn't find a clean start point
+        if (startIndex === this.history.length) startIndex = this.history.length - 2;
+        this.history = this.history.slice(startIndex);
       }
 
       // Handle function calls loop

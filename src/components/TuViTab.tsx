@@ -1,8 +1,9 @@
 import { handleAIError } from '../utils/aiErrorHandler';
+import { sanitizeApiContents } from '../utils/aiHelpers';
 import React, { useState, useEffect, useRef } from 'react';
 import { calculateTuVi, ZODIACS } from '../lib/tuviLogic';
 import { TuViCell } from './TuViCell';
-import { Compass, Calendar, Save, List, Trash2, X, Maximize, Settings, Sparkles, BrainCircuit, UserCircle, Send, MessageSquareShare, Copy, Check, RefreshCw } from 'lucide-react';
+import { Compass, Calendar, Save, List, Trash2, X, Maximize, Settings, Sparkles, BrainCircuit, UserCircle, Send, MessageSquareShare, Copy, Check, RefreshCw, Volume2, Square } from 'lucide-react';
 import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
 import { VoiceInput } from './VoiceInput';
 import { getAI } from '../services/aiService';
@@ -11,6 +12,7 @@ import { THIEN_LUONG_THEORY } from '../constants/thienLuongTheory';
 import { TU_VI_HAM_SO_THEORY } from '../constants/tuViHamSo';
 import Markdown from 'react-markdown';
 import { Solar, Lunar } from 'lunar-javascript';
+import { setupSpeechSynthesis, cancelSpeech, speakText } from '../lib/speech';
 
 interface SavedChart {
   id: string;
@@ -67,7 +69,28 @@ export const TuViTab: React.FC<TuViProps> = ({ onRequireApiKey }) => {
   const [interimTuviQuestion, setInterimTuviQuestion] = useState('');
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [copiedIndex, setCopiedIndex] = useState<number | null>(null);
+  const [isReadingIndex, setIsReadingIndex] = useState<number | null>(null);
   const chatEndRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    setupSpeechSynthesis();
+    return () => cancelSpeech();
+  }, []);
+
+  const handleSpeak = (text: string, index: number) => {
+    if (isReadingIndex === index) {
+      cancelSpeech();
+      setIsReadingIndex(null);
+      return;
+    }
+
+    speakText(
+      text,
+      () => setIsReadingIndex(index),
+      () => setIsReadingIndex(null),
+      () => setIsReadingIndex(null)
+    );
+  };
 
   useEffect(() => {
     // Scroll chat to bottom when updated
@@ -140,7 +163,20 @@ export const TuViTab: React.FC<TuViProps> = ({ onRequireApiKey }) => {
         return `[Cung ${c.cung} - ${c.canChi}]${labelStr}: Hành ${c.cungHanh}. Chính tinh: ${chinh.join(', ') || 'Vô Chính Diệu'}. Phụ tinh: ${[...phu, ...tt].join(', ') || 'Không'}`;
       }).join('\n');
 
-      const systemInstruction = `Bạn là Đại sư Tử Vi Đẩu Số.
+      const methodSpecificTheory = `${TU_VI_HAM_SO_THEORY}\n\n${THIEN_LUONG_THEORY}\n\nPHƯƠNG PHÁP CỤ THỂ (TỔNG HỢP):\n- Bắt buộc phải coi lá số tử vi như một hàm số đa biến phức tạp.\n- Bắt buộc đánh giá Mệnh Thân nằm trong tam giác Thái Tuế nào, vòng Tràng Sinh, và Âm Dương Thuận/Nghịch lý. Nhấn mạnh chữ NGỘ để tu nhân tích đức.\n- Kết hợp sự tương tác giữa các cung, các sao, Mệnh, Cục, và Âm Dương Ngũ Hành.`;
+
+      const cauTrucInstruction = `5. CẤU TRÚC (Nếu người dùng hỏi chung hoặc yêu cầu luận giải 12 cung):
+   - Đánh giá Tổng Quan: Xét Âm Dương thuận nghịch, Mệnh/Cục tương sinh tương khắc. Đánh giá Mệnh Thân nằm trong tam giác Thái Tuế, vòng Tràng Sinh. Đánh giá Tứ Hóa năm sinh.
+   - Luận giải chi tiết ĐẦY ĐỦ 12 CUNG theo đúng thứ tự (BẮT BUỘC dùng markdown ### cho tên cung để nội dung nhỏ lại và in đậm, ví dụ: ### 1. CUNG MỆNH): 1. Cung Mệnh, 2. Cung Phụ Mẫu, 3. Cung Phúc Đức, 4. Cung Điền Trạch, 5. Cung Quan Lộc, 6. Cung Nô Bộc, 7. Cung Thiên Di, 8. Cung Tật Ách, 9. Cung Tài Bạch, 10. Cung Tử Tức, 11. Cung Phu Thê, 12. Cung Huynh Đệ. Rất quan trọng là phải phân tích đủ 12 cung không được bỏ sót, kết hợp phân tích tinh diệu và sự tác động của Tứ Hóa.
+   - Diễn biến hạn vận năm ${chartData.viewingYear} (Kết hợp Nam Phái và Bắc Phái: Đại Vận, Tiểu Vận, Lưu Đại Vận, Phi tinh Tứ Hóa Lưu Niên).
+   - Lời khuyên tu nhân, tích phúc cải mệnh theo triết lý Dịch Học & nhân sinh.`;
+
+      const systemInstruction = `Bạn là Đại sư Tử Vi Đẩu Số, am tường sâu sắc cả Tử Vi Nam Phái và Bắc Phái.
+
+NGUỒN DỮ LIỆU & CƠ SỞ LÝ LUẬN:
+- TỬ VI NAM PHÁI (Trọng Tinh Diệu, Cách Cục, Âm Dương Ngũ Hành): Sự luận giải dựa trên nền tảng của các cổ thư và danh tác kinh điển như: "Tử Vi Đẩu Số Toàn Thư" (Hi Tán tiên sinh / Trần Đoàn), "Tử Vi Đẩu Số Tân Biên" (Vân Đằng Thái Thứ Lang), "Tử Vi Nghiệm Lý" & "Tử Vi Giảng Minh" (Cụ Thiên Lương), "Tử Vi Thực Hành" (Dịch Lý Huyền Cơ), "Tử Vi Hàm Số" (Nguyễn Phát Lộc). Phân tích kỹ Miếu/Vượng/Đắc/Hãm, sự tương tác của Chính tinh, Phụ tinh và Sát tinh trong Tam phương Tứ chính.
+- TỬ VI BẮC PHÁI (Trọng Tứ Hóa, Phi Tinh, Cung Chức): Sử dụng sở học tinh hoa từ "Khâm Thiên Môn", "Cửu Tinh Đẩu Số", "Phi Tinh Tử Vi Đẩu Số Toàn Tập". Lấy Tứ Hóa (Lộc, Quyền, Khoa, Kỵ) làm linh hồn, phi hóa giữa các cung chức nguyên thủy, đại vận, tiểu vận, lưu niên để kích hoạt và xác định thời điểm xảy ra sự việc (Động tinh).
+
 THÔNG TIN LÁ SỐ:
 - Ghi chú: ${chartName || 'Đương số'} (${gender === 'M' ? 'Nam' : 'Nữ'})
 - Mệnh: ${chartData.menh}
@@ -161,30 +197,20 @@ BÁT CHỮ TỨ HÓA:
 CÁC CUNG TRÊN LÁ SỐ:
 ${cungsInfos}
 
-${THIEN_LUONG_THEORY}
-
-${TU_VI_HAM_SO_THEORY}
+${methodSpecificTheory}
 
 QUY TẮC PHẢN HỒI:
 1. LUÔN LUÔN tin tưởng và sử dụng các vị trí Đại Vận, Tiểu Vận, Lưu Đại Vận đã được cung cấp ở trên. KHÔNG TỰ TÍNH LẠI để tránh sai sót.
-2. TRỰC DIỆN, CHUYÊN SÂU, và RẤT CHI TIẾT. Phân tích tường tận sự liên kết giữa các sao, cung, mệnh cục. Kết hợp cả Nam Phái (Tam hợp phái, tinh hệ) và Bắc Phái (Tứ Hóa phái, phi tinh Tứ Hóa). TUYỆT ĐỐI KHÔNG TRÍCH DẪN hay nhắc đến tên các sách, tài liệu, trường phái, tác giả (như Tử Vi Hàm Số, Tử Vi Nghiệm Lý, phái Thiên Lương...). Chỉ được đưa ra kết quả luận đoán một cách tự nhiên như một người thầy đang xem trực tiếp!
+2. TRỰC DIỆN, CHUYÊN SÂU, và RẤT CHI TIẾT. Phân tích tường tận sự liên kết giữa các sao, cung, mệnh cục. Tùy thuộc phương pháp luận mà đưa ra kiến giải sâu sắc phù hợp.
 3. TUYỆT ĐỐI KHÔNG DÙNG LỜI CHÀO HAY CẢM ƠN.
-4. LUẬN ĐOÁN KẾT HỢP TINH DIỆU VÀ TỨ HÓA: Phải kết hợp Tam hợp, Xung chiếu, Nhị hợp và sự biến hóa của Tuần/Triệt, Lục Sát Tinh (Nam Phái). Đồng thời MỞ RỘNG sử dụng Tứ Hóa năm sinh, Tứ Hóa lưu niên và Phi Tinh Tứ Hóa (Bắc Phái) để luận đoán các sự kiện phát sinh và kết quả.
-5. CẤU TRÚC (Nếu người dùng hỏi chung hoặc yêu cầu luận giải 12 cung):
-   - Đánh giá Tổng Quan: Xét Âm Dương thuận nghịch, Mệnh/Cục tương sinh tương khắc. Đánh giá Mệnh Thân nằm trong tam giác Thái Tuế nào, vòng Tràng Sinh. Đánh giá Tứ Hóa năm sinh an tại các cung.
-   - Luận giải chi tiết ĐẦY ĐỦ 12 CUNG theo đúng thứ tự: 1. Cung Mệnh, 2. Cung Phụ Mẫu, 3. Cung Phúc Đức, 4. Cung Điền Trạch, 5. Cung Quan Lộc, 6. Cung Nô Bộc, 7. Cung Thiên Di, 8. Cung Tật Ách, 9. Cung Tài Bạch, 10. Cung Tử Tức, 11. Cung Phu Thê, 12. Cung Huynh Đệ. Rất quan trọng là phải phân tích đủ 12 cung không được bỏ sót, kết hợp phân tích tinh diệu và sự tác động của Tứ Hóa.
-   - Diễn biến hạn vận năm ${chartData.viewingYear} (Kết hợp Nam Phái và Bắc Phái: Đại Vận, Tiểu Vận, Lưu Đại Vận, Phi tinh Tứ Hóa Lưu Niên).
-   - Lời khuyên tu nhân, tích phúc cải mệnh theo triết lý Dịch Học & nhân sinh.
+4. LUẬN ĐOÁN KẾT HỢP TINH DIỆU VÀ TỨ HÓA.
+${cauTrucInstruction}
 6. TRÌNH BÀY: CHẮC CHẮN PHẢI sử dụng Markdown Headers (ví dụ: ### 1. CUNG MỆNH) và **in đậm** để phân chia các phần rành mạch, dễ nhìn. KHÔNG dồn chữ thành một khối.`;
 
       const userPrompt = questionToUse ? questionToUse : 'Hãy luận đoán chi tiết lá số cả đời của tôi qua 12 cung và phân tích chi tiết diễn biến năm nay.';
       const displayUserMsg = questionToUse ? questionToUse : 'Luận đoán chi tiết 12 cung cả đời và diễn biến năm nay.';
       
-      const apiContents = tuviChat.map(msg => ({
-        role: msg.role as 'user' | 'model',
-        parts: [{ text: msg.text }]
-      }));
-      apiContents.push({ role: 'user', parts: [{ text: userPrompt }] });
+      const apiContents = sanitizeApiContents(tuviChat, userPrompt);
 
       setTuviChat(prev => [...prev, { role: 'user', text: displayUserMsg }, { role: 'model', text: '' }]);
       setTuviQuestion('');
@@ -448,43 +474,43 @@ QUY TẮC PHẢN HỒI:
                    <div className="grid grid-cols-4 gap-1.5 bg-slate-50 p-1.5 rounded-lg border border-slate-100/80">
                       <label className="flex flex-col gap-0 w-full relative group">
                          <span className="text-[9px] font-bold text-slate-400 uppercase tracking-wider pl-1">Ngày (DL)</span>
-                         <input type="number" min="1" max="31" value={day} onChange={e => {setDay(e.target.value); setActiveInput('solar');}} className="w-full px-1 py-1.5 rounded-md border border-slate-200 focus:outline-none focus:ring-1 focus:ring-amber-500 bg-white font-bold text-slate-700 text-center text-xs shadow-sm" />
+                         <input type="number" min="1" max="31" value={day} onFocus={() => setActiveInput('solar')} onChange={e => setDay(e.target.value)} className="w-full px-1 py-1.5 rounded-md border border-slate-200 focus:outline-none focus:ring-1 focus:ring-amber-500 bg-white font-bold text-slate-700 text-center text-[16px] md:text-xs shadow-sm" />
                       </label>
                       <label className="flex flex-col gap-0 w-full relative group">
                          <span className="text-[9px] font-bold text-slate-400 uppercase tracking-wider pl-1">Tháng (DL)</span>
-                         <input type="number" min="1" max="12" value={month} onChange={e => {setMonth(e.target.value); setActiveInput('solar');}} className="w-full px-1 py-1.5 rounded-md border border-slate-200 focus:outline-none focus:ring-1 focus:ring-amber-500 bg-white font-bold text-slate-700 text-center text-xs shadow-sm" />
+                         <input type="number" min="1" max="12" value={month} onFocus={() => setActiveInput('solar')} onChange={e => setMonth(e.target.value)} className="w-full px-1 py-1.5 rounded-md border border-slate-200 focus:outline-none focus:ring-1 focus:ring-amber-500 bg-white font-bold text-slate-700 text-center text-[16px] md:text-xs shadow-sm" />
                       </label>
                       <label className="flex flex-col gap-0 w-full relative group">
                          <span className="text-[9px] font-bold text-slate-400 uppercase tracking-wider pl-1">Năm (DL)</span>
-                         <input type="number" min="1900" max="2100" value={year} onChange={e => {setYear(e.target.value); setActiveInput('solar');}} className="w-full px-1 py-1.5 rounded-md border border-slate-200 focus:outline-none focus:ring-1 focus:ring-amber-500 bg-white font-bold text-slate-700 text-center text-xs shadow-sm" />
+                         <input type="number" min="1900" max="2100" value={year} onFocus={() => setActiveInput('solar')} onChange={e => setYear(e.target.value)} className="w-full px-1 py-1.5 rounded-md border border-slate-200 focus:outline-none focus:ring-1 focus:ring-amber-500 bg-white font-bold text-slate-700 text-center text-[16px] md:text-xs shadow-sm" />
                       </label>
                       <label className="flex flex-col gap-0 w-full relative group">
                          <span className="text-[9px] font-bold text-slate-400 uppercase tracking-wider pl-1 text-center truncate">Giờ(0-23)</span>
-                         <input type="number" min="0" max="23" value={hourStr} onChange={e => setHourStr(e.target.value)} className="w-full px-1 py-1.5 rounded-md border border-slate-200 focus:outline-none focus:ring-1 focus:ring-amber-500 bg-white font-bold text-slate-700 text-center text-xs shadow-sm" />
+                         <input type="number" min="0" max="23" value={hourStr} onChange={e => setHourStr(e.target.value)} className="w-full px-1 py-1.5 rounded-md border border-slate-200 focus:outline-none focus:ring-1 focus:ring-amber-500 bg-white font-bold text-slate-700 text-center text-[16px] md:text-xs shadow-sm" />
                       </label>
                    </div>
                    
-                   <div className="grid grid-cols-4 gap-1.5 bg-rose-50/50 p-1.5 rounded-lg border border-rose-100/80">
+                   <div className="grid grid-cols-4 gap-1.5 bg-slate-100/40 p-1.5 rounded-lg border border-slate-200/50">
                       <label className="flex flex-col gap-0 w-full">
-                         <span className="text-[9px] font-bold text-rose-500/80 uppercase tracking-wider pl-1">Ngày (AL)</span>
-                         <input type="number" min="1" max="30" value={lDay} onChange={e => {setLDay(e.target.value); setActiveInput('lunar');}} className="w-full px-1 py-1.5 rounded-md border border-rose-200 focus:outline-none focus:ring-1 focus:ring-rose-500 bg-white font-bold text-rose-700 text-center text-xs shadow-sm" />
+                         <span className="text-[9px] font-bold text-slate-500/80 uppercase tracking-wider pl-1">Ngày (AL)</span>
+                         <input type="number" min="1" max="30" value={lDay} onFocus={() => setActiveInput('lunar')} onChange={e => setLDay(e.target.value)} className="w-full px-1 py-1.5 rounded-md border border-slate-200 focus:outline-none focus:ring-1 focus:ring-slate-400 bg-white font-bold text-slate-700 text-center text-[16px] md:text-xs shadow-sm" />
                       </label>
                       <label className="flex flex-col gap-0 w-full relative">
                          <div className="flex items-center gap-1 pl-1">
-                           <span className="text-[9px] font-bold text-rose-500/80 uppercase tracking-wider whitespace-nowrap">Tháng (AL)</span>
+                           <span className="text-[9px] font-bold text-slate-500/80 uppercase tracking-wider whitespace-nowrap">Tháng (AL)</span>
                            <label className="flex items-center gap-0.5 cursor-pointer" title="Tháng nhuận?">
-                             <input type="checkbox" id="leap-check" checked={lIsLeap} onChange={e => {setLIsLeap(e.target.checked); setActiveInput('lunar');}} className="w-2.5 h-2.5 accent-rose-500 cursor-pointer" />
+                             <input type="checkbox" id="leap-check" checked={lIsLeap} onFocus={() => setActiveInput('lunar')} onChange={e => setLIsLeap(e.target.checked)} className="w-2.5 h-2.5 accent-slate-500 cursor-pointer" />
                            </label>
                          </div>
-                         <input type="number" min="1" max="12" value={lMonth} onChange={e => {setLMonth(e.target.value); setActiveInput('lunar');}} className="w-full px-1 py-1.5 rounded-md border border-rose-200 focus:outline-none focus:ring-1 focus:ring-rose-500 bg-white font-bold text-rose-700 text-center text-xs shadow-sm" />
+                         <input type="number" min="1" max="12" value={lMonth} onFocus={() => setActiveInput('lunar')} onChange={e => setLMonth(e.target.value)} className="w-full px-1 py-1.5 rounded-md border border-slate-200 focus:outline-none focus:ring-1 focus:ring-slate-400 bg-white font-bold text-slate-700 text-center text-[16px] md:text-xs shadow-sm" />
                       </label>
                       <label className="flex flex-col gap-0 w-full">
-                         <span className="text-[9px] font-bold text-rose-500/80 uppercase tracking-wider pl-1">Năm (AL)</span>
-                         <input type="number" min="1900" max="2100" value={lYear} onChange={e => {setLYear(e.target.value); setActiveInput('lunar');}} className="w-full px-1 py-1.5 rounded-md border border-rose-200 focus:outline-none focus:ring-1 focus:ring-rose-500 bg-white font-bold text-rose-700 text-center text-xs shadow-sm" />
+                         <span className="text-[9px] font-bold text-slate-500/80 uppercase tracking-wider pl-1">Năm (AL)</span>
+                         <input type="number" min="1900" max="2100" value={lYear} onFocus={() => setActiveInput('lunar')} onChange={e => setLYear(e.target.value)} className="w-full px-1 py-1.5 rounded-md border border-slate-200 focus:outline-none focus:ring-1 focus:ring-slate-400 bg-white font-bold text-slate-700 text-center text-[16px] md:text-xs shadow-sm" />
                       </label>
                       <label className="flex flex-col gap-0 w-full">
-                         <span className="text-[9px] font-bold text-rose-500/80 uppercase tracking-wider pl-1 text-center truncate">Giờ(0-23)</span>
-                         <input type="number" min="0" max="23" value={hourStr} onChange={e => setHourStr(e.target.value)} className="w-full px-1 py-1.5 rounded-md border border-rose-200 focus:outline-none focus:ring-1 focus:ring-rose-500 bg-white font-bold text-rose-700 text-center text-xs shadow-sm" />
+                         <span className="text-[9px] font-bold text-slate-500/80 uppercase tracking-wider pl-1 text-center truncate">Giờ(0-23)</span>
+                         <input type="number" min="0" max="23" value={hourStr} onChange={e => setHourStr(e.target.value)} className="w-full px-1 py-1.5 rounded-md border border-slate-200 focus:outline-none focus:ring-1 focus:ring-slate-400 bg-white font-bold text-slate-700 text-center text-[16px] md:text-xs shadow-sm" />
                       </label>
                    </div>
                  </div>
@@ -495,14 +521,14 @@ QUY TẮC PHẢN HỒI:
                   <div className="flex flex-1 gap-1.5 bg-slate-50 p-1.5 rounded-lg border border-slate-100/80">
                      <label className="flex flex-col gap-0 w-full">
                         <span className="text-[9px] font-bold text-slate-400 uppercase tracking-wider pl-1">Giới Tính</span>
-                        <select value={gender} onChange={e => setGender(e.target.value as any)} className="w-full px-1 py-1.5 rounded-md border border-slate-200 focus:outline-none focus:ring-1 focus:ring-amber-500 bg-white font-bold text-slate-700 text-xs shadow-sm text-center">
+                        <select value={gender} onChange={e => setGender(e.target.value as any)} className="w-full px-1 py-1.5 rounded-md border border-slate-200 focus:outline-none focus:ring-1 focus:ring-amber-500 bg-white font-bold text-slate-700 text-[16px] md:text-xs shadow-sm text-center">
                            <option value="M">Nam</option>
                            <option value="F">Nữ</option>
                         </select>
                      </label>
                      <label className="flex flex-col gap-0 w-full relative">
                         <span className="text-[9px] font-bold text-amber-600 uppercase tracking-wider pl-1">Năm Xem</span>
-                        <input type="number" min="1900" max="2100" value={viewingYear} onChange={e => setViewingYear(e.target.value)} className="w-full px-1 py-1.5 rounded-md border border-amber-200/60 focus:outline-none focus:ring-1 focus:ring-amber-500 bg-amber-50/40 font-bold text-amber-700 text-center text-xs shadow-sm" />
+                        <input type="number" min="1900" max="2100" value={viewingYear} onChange={e => setViewingYear(e.target.value)} className="w-full px-1 py-1.5 rounded-md border border-amber-200/60 focus:outline-none focus:ring-1 focus:ring-amber-500 bg-amber-50/40 font-bold text-amber-700 text-center text-[16px] md:text-xs shadow-sm" />
                      </label>
                   </div>
                </div>
@@ -512,7 +538,7 @@ QUY TẮC PHẢN HỒI:
 
           <div className="flex flex-col md:flex-row gap-2 mt-1 border-t border-slate-100/60 pt-2">
              <div className="flex-1 flex bg-slate-50 p-1.5 rounded-lg border border-slate-100/80">
-                 <input type="text" placeholder="Tên lá số / Ghi chú để lưu..." value={chartName} onChange={e => setChartName(e.target.value)} className="w-full px-3 py-1.5 rounded-md border border-slate-200 focus:outline-none focus:ring-1 focus:ring-amber-500 bg-white font-medium text-slate-700 text-xs shadow-sm" />
+                 <input type="text" placeholder="Tên lá số / Ghi chú để lưu..." value={chartName} onChange={e => setChartName(e.target.value)} className="w-full px-3 py-1.5 rounded-md border border-slate-200 focus:outline-none focus:ring-1 focus:ring-amber-500 bg-white font-medium text-slate-700 text-[16px] md:text-sm shadow-sm" />
              </div>
              
              <div className="flex gap-2">
@@ -713,6 +739,13 @@ QUY TẮC PHẢN HỒI:
                           {msg.text && (
                             <div className="absolute top-2 right-2 flex items-center gap-1 transition-all">
                               <button
+                                onClick={() => handleSpeak(msg.text, idx)}
+                                className={`p-1.5 ${isReadingIndex === idx ? 'bg-rose-100 text-rose-600' : 'bg-white/80 text-slate-400 hover:text-rose-600 hover:bg-rose-50'} rounded-lg transition-all shadow-sm border border-slate-100`}
+                                title={isReadingIndex === idx ? "Dừng đọc" : "Đọc nội dung"}
+                              >
+                                {isReadingIndex === idx ? <Square className="w-3.5 h-3.5 animate-pulse" /> : <Volume2 className="w-3.5 h-3.5" />}
+                              </button>
+                              <button
                                 onClick={() => {
                                   navigator.clipboard.writeText(msg.text);
                                   setCopiedIndex(idx);
@@ -745,7 +778,7 @@ QUY TẮC PHẢN HỒI:
                 <div className="relative group">
                   <textarea
                     disabled={isAnalyzing}
-                    className="w-full p-4 bg-slate-50 border border-slate-100 rounded-2xl text-sm font-medium focus:outline-none focus:border-rose-300 focus:ring-4 focus:ring-rose-50 min-h-[80px] max-h-[160px] resize-none shadow-inner transition-all disabled:opacity-50"
+                    className="w-full p-4 bg-slate-50 border border-slate-100 rounded-2xl text-[16px] md:text-sm font-medium focus:outline-none focus:border-rose-300 focus:ring-4 focus:ring-rose-50 min-h-[80px] max-h-[160px] resize-none shadow-inner transition-all disabled:opacity-50"
                     placeholder="Đặt câu hỏi chi tiết về công danh, tài lộc, tình duyên..."
                     value={tuviQuestion + (interimTuviQuestion ? (tuviQuestion ? ' ' : '') + interimTuviQuestion : '')}
                     onChange={(e) => setTuviQuestion(e.target.value)}

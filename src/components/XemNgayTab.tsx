@@ -1,4 +1,5 @@
 import { handleAIError } from '../utils/aiErrorHandler';
+import { sanitizeApiContents } from '../utils/aiHelpers';
 import React, { useState, useMemo, useEffect, useRef } from 'react';
 import { 
   CalendarDays, ChevronLeft, ChevronRight, Info, Clock, MapPin, 
@@ -14,6 +15,7 @@ import { getAI } from '../services/aiService';
 import { GEMINI_MODEL } from '../constants/ai';
 import Markdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
+import { setupSpeechSynthesis, cancelSpeech, speakText as speakTextHelper } from '../lib/speech';
 
 // --- Types ---
 type Quality = 'Good' | 'Bad' | 'Neutral';
@@ -298,31 +300,23 @@ export const XemNgayTab: React.FC<XemNgayTabProps> = ({ onSwitchToKyMon, onRequi
   const chatEndRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    return () => {
-      if ("speechSynthesis" in window) {
-        window.speechSynthesis.cancel();
-      }
-    };
+    setupSpeechSynthesis();
+    return () => cancelSpeech();
   }, []);
 
   const speakText = (text: string, index: number) => {
-    if (!("speechSynthesis" in window)) {
-      alert("Trình duyệt của bạn không hỗ trợ tính năng đọc văn bản.");
+    if (speakingIndex === index) {
+      cancelSpeech();
+      setSpeakingIndex(null);
       return;
     }
-    if (speakingIndex === index) {
-      window.speechSynthesis.cancel();
-      setSpeakingIndex(null);
-    } else {
-      window.speechSynthesis.cancel();
-      const plainText = text.replace(/[*_#`\[\]]/g, "").replace(/<[^>]+>/g, "");
-      const utterance = new SpeechSynthesisUtterance(plainText);
-      utterance.lang = "vi-VN";
-      utterance.onend = () => setSpeakingIndex(null);
-      utterance.onerror = () => setSpeakingIndex(null);
-      setSpeakingIndex(index);
-      window.speechSynthesis.speak(utterance);
-    }
+
+    speakTextHelper(
+      text,
+      () => setSpeakingIndex(index),
+      () => setSpeakingIndex(null),
+      () => setSpeakingIndex(null)
+    );
   };
 
   useEffect(() => {
@@ -376,11 +370,7 @@ ${info}`;
       const userPrompt = questionToUse ? questionToUse : 'Hãy luận giải tổng quan về ngày này và cho biết nên làm việc gì tốt nhất.';
       const displayUserMsg = questionToUse ? questionToUse : 'Luận giải tổng quan ngày này.';
       
-      const apiContents = xemNgayChat.map(msg => ({
-        role: msg.role as 'user' | 'model',
-        parts: [{ text: msg.text }]
-      }));
-      apiContents.push({ role: 'user', parts: [{ text: userPrompt }] });
+      const apiContents = sanitizeApiContents(xemNgayChat, userPrompt);
 
       setXemNgayChat(prev => [...prev, { role: 'user', text: displayUserMsg }, { role: 'model', text: '' }]);
       setXemNgayQuestion('');

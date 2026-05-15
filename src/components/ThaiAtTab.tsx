@@ -1,4 +1,6 @@
 import React, { useState, useEffect, useMemo, useRef, Fragment } from "react";
+import { setupSpeechSynthesis, cancelSpeech, speakText as speakTextHelper } from '../lib/speech';
+import { sanitizeApiContents } from "../utils/aiHelpers";
 import {
   Compass,
   Sparkles,
@@ -77,32 +79,23 @@ export const ThaiAtTab: React.FC<ThaiAtTabProps> = ({ date, lunarInfo, onRequire
   }, [thaiAtChat]);
 
   useEffect(() => {
-    return () => {
-      if ("speechSynthesis" in window) {
-        window.speechSynthesis.cancel();
-      }
-    };
+    setupSpeechSynthesis();
+    return () => cancelSpeech();
   }, []);
 
   const speakText = (text: string, index: number) => {
-    if (!("speechSynthesis" in window)) {
-      alert("Trình duyệt của bạn không hỗ trợ tính năng đọc văn bản.");
+    if (speakingIndex === index) {
+      cancelSpeech();
+      setSpeakingIndex(null);
       return;
     }
-    if (speakingIndex === index) {
-      window.speechSynthesis.cancel();
-      setSpeakingIndex(null);
-    } else {
-      window.speechSynthesis.cancel();
-      // Remove basic markdown and HTML tags for better reading
-      const plainText = text.replace(/[*_#`\[\]]/g, "").replace(/<[^>]+>/g, "");
-      const utterance = new SpeechSynthesisUtterance(plainText);
-      utterance.lang = "vi-VN";
-      utterance.onend = () => setSpeakingIndex(null);
-      utterance.onerror = () => setSpeakingIndex(null);
-      setSpeakingIndex(index);
-      window.speechSynthesis.speak(utterance);
-    }
+
+    speakTextHelper(
+      text,
+      () => setSpeakingIndex(index),
+      () => setSpeakingIndex(null),
+      () => setSpeakingIndex(null)
+    );
   };
 
   const generateAIInterpretation = async (customQuestion?: string) => {
@@ -178,11 +171,7 @@ ${
         customQuestion ||
         "Hãy lập bài luận giải chi tiết lá số Thái Ất này theo cấu trúc chuyên nghiệp.";
 
-      const apiContents = thaiAtChat.map((msg) => ({
-        role: msg.role,
-        parts: [{ text: msg.text }],
-      }));
-      apiContents.push({ role: "user", parts: [{ text: userPrompt }] });
+      const apiContents = sanitizeApiContents(thaiAtChat, userPrompt);
 
       setThaiAtChat((prev) => [
         ...prev,

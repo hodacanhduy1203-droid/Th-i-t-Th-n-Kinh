@@ -61,6 +61,7 @@ import { ThaiAtApp } from "./components/ThaiAt/ThaiAtApp";
 import { AIChatAssistant } from "./components/AIChatAssistant";
 import AdminModal from "./components/AdminModal";
 import { handleAIError } from "./utils/aiErrorHandler";
+import { sanitizeApiContents } from "./utils/aiHelpers";
 import { getAI } from "./services/aiService";
 import { GEMINI_MODEL, RECOMMENDED_MODELS } from "./constants/ai";
 import { auth } from "./services/firebaseService";
@@ -3708,11 +3709,7 @@ QUY TẮC PHẢN HỒI:
 				? question
 				: "Luận đoán tổng quan lá số bật định.";
 
-			const apiContents = baziChat.map((msg) => ({
-				role: msg.role,
-				parts: [{ text: msg.text }],
-			}));
-			apiContents.push({ role: "user", parts: [{ text: userPrompt }] });
+			const apiContents = sanitizeApiContents(baziChat, userPrompt);
 
 			setBaziChat((prev) => [
 				...prev,

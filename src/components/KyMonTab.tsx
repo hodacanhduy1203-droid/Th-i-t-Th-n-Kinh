@@ -1,4 +1,5 @@
 import { handleAIError } from "../utils/aiErrorHandler";
+import { sanitizeApiContents } from "../utils/aiHelpers";
 import React, { useState, useMemo, useEffect } from "react";
 import {
   Shield,
@@ -22,6 +23,7 @@ import {
 } from "lucide-react";
 import { VoiceInput } from "./VoiceInput";
 import { useLanguage } from "../contexts/LanguageContext";
+import { setupSpeechSynthesis, cancelSpeech, speakText as speakTextHelper } from '../lib/speech';
 import Markdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import rehypeRaw from "rehype-raw";
@@ -237,62 +239,23 @@ export default function KyMonTab({ onRequireApiKey }: Props) {
   const chatEndRef = React.useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    // Warm up voices
-    if ("speechSynthesis" in window) {
-      window.speechSynthesis.getVoices();
-    }
-    return () => {
-      if ("speechSynthesis" in window) {
-        window.speechSynthesis.cancel();
-      }
-    };
+    setupSpeechSynthesis();
+    return () => cancelSpeech();
   }, []);
 
   const speakText = (text: string, index: number) => {
-    if (!("speechSynthesis" in window)) {
-      alert("Trình duyệt của bạn không hỗ trợ tính năng đọc văn bản.");
+    if (speakingIndex === index) {
+      cancelSpeech();
+      setSpeakingIndex(null);
       return;
     }
 
-    if (speakingIndex === index) {
-      window.speechSynthesis.cancel();
-      setSpeakingIndex(null);
-    } else {
-      window.speechSynthesis.cancel();
-      const plainText = text
-        .replace(/[*_#`\[\]]/g, "")
-        .replace(/<[^>]+>/g, "")
-        .replace(/(\r\n|\n|\r)/gm, " ")
-        .trim();
-
-      const utterance = new SpeechSynthesisUtterance(plainText);
-
-      // Select Vietnamese voice if available
-      const voices = window.speechSynthesis.getVoices();
-      const viVoice = voices.find((v) => v.lang.toLowerCase().includes("vi"));
-      if (viVoice) {
-        utterance.voice = viVoice;
-      }
-      utterance.lang = "vi-VN";
-      utterance.rate = 1.0;
-      utterance.pitch = 1.0;
-      utterance.volume = 1.0;
-
-      utterance.onstart = () => {
-        setSpeakingIndex(index);
-      };
-
-      utterance.onend = () => {
-        setSpeakingIndex(null);
-      };
-
-      utterance.onerror = (e) => {
-        console.error("Speech Error:", e);
-        setSpeakingIndex(null);
-      };
-
-      window.speechSynthesis.speak(utterance);
-    }
+    speakTextHelper(
+      text,
+      () => setSpeakingIndex(index),
+      () => setSpeakingIndex(null),
+      () => setSpeakingIndex(null)
+    );
   };
 
   useEffect(() => {
@@ -531,11 +494,7 @@ export default function KyMonTab({ onRequireApiKey }: Props) {
 
       const userPrompt = questionToUse;
 
-      const apiContents = kyMonChat.map((msg) => ({
-        role: msg.role,
-        parts: [{ text: msg.text }],
-      }));
-      apiContents.push({ role: "user", parts: [{ text: userPrompt }] });
+      const apiContents = sanitizeApiContents(kyMonChat, userPrompt);
 
       setKyMonChat((prev) => [
         ...prev,
