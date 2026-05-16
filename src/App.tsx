@@ -1547,8 +1547,9 @@ function HexagramDisplay({
   }
 
   const wrapperClass = narrowWidth
-    ? `flex flex-col gap-0 mt-1 p-0.5 sm:p-1 md:p-1.5 lg:p-2 bg-[#F2F2EB] border border-gray-200 rounded-lg shadow-sm h-full flex-shrink basis-0 w-full ${isChangedView ? "flex-[2] min-w-[90px] max-w-[110px] sm:max-w-[130px] md:max-w-[150px]" : "flex-[3] min-w-[150px] max-w-[180px] sm:max-w-[210px] md:max-w-[240px]"}`
-    : `flex flex-col gap-0 mt-1 p-0.5 sm:p-1 md:p-1.5 lg:p-2 bg-[#F2F2EB] border border-gray-200 rounded-lg shadow-sm h-full flex-shrink basis-0 w-full ${isChangedView ? "flex-[2] max-w-[150px] sm:max-w-[180px] md:max-w-[200px] lg:max-w-[230px] min-w-[110px] sm:min-w-[135px]" : "flex-[3] max-w-[240px] sm:max-w-[280px] md:max-w-[320px] lg:max-w-[360px] min-w-[180px] sm:min-w-[220px]"}`;
+    ? `flex flex-col gap-0 mt-1 p-0.5 sm:p-1 md:p-1.5 lg:p-2 bg-white/50 border border-slate-200/80 rounded-xl shadow-sm h-full flex-shrink basis-0 w-full ${isChangedView ? "flex-[2] min-w-[90px] max-w-[110px] sm:max-w-[130px] md:max-w-[150px]" : "flex-[3] min-w-[150px] max-w-[180px] sm:max-w-[210px] md:max-w-[240px]"}`
+    : `flex flex-col gap-0 mt-1 p-0.5 sm:p-1 md:p-1.5 lg:p-2 bg-white/50 border border-slate-200/80 rounded-xl shadow-sm h-full flex-shrink basis-0 w-full ${isChangedView ? "flex-[2] max-w-[150px] sm:max-w-[180px] md:max-w-[200px] lg:max-w-[230px] min-w-[110px] sm:min-w-[135px]" : "flex-[3] max-w-[240px] sm:max-w-[280px] md:max-w-[320px] lg:max-w-[360px] min-w-[180px] sm:min-w-[220px]"}`;
+
 
   return (
     <div className={wrapperClass}>
@@ -6335,66 +6336,59 @@ Yêu cầu: Hãy viết một đoạn CHỈ 2 CÂU cực kỳ súc tích: Câu 1
             </div>
 
             {/* Right Panel: Trigram Result */}
-            <div className="w-full xl:flex-1 bg-[#F2F2EB] border border-slate-200/80 rounded-xl shadow-sm flex flex-col mt-1.5 xl:mt-0 xl:ml-2 min-w-0">
-              <div className="bg-gradient-to-r from-amber-50 to-orange-50 py-1.5 px-2 border-b border-amber-200/60 flex items-center justify-center gap-2">
-                <div className="w-0.5 h-4 bg-amber-500 rounded-full"></div>
-                <h2 className="font-serif text-[15px] font-extrabold text-slate-800 uppercase tracking-tight">
-                  KẾT QUẢ BÁT QUÁI
-                </h2>
-              </div>
+            <div className="w-full xl:flex-1 flex flex-col mt-4 xl:mt-0 xl:ml-2 min-w-0">
+              <div className="bg-[#F2F2EB] rounded-2xl shadow-sm border border-slate-200/60 p-4">
+                <div className="flex items-center gap-3 mb-6">
+                  <div className="w-1.5 h-6 bg-amber-500 rounded-full"></div>
+                  <h2 className="font-serif text-[18px] font-extrabold text-[#334155] uppercase tracking-wide">
+                    BẢN QUẺ LẬP
+                  </h2>
+                </div>
 
-              <div className="p-2 lg:p-3 flex flex-col items-center">
-                <div className="w-full flex flex-col gap-2.5">
+                <div className="flex flex-col items-center">
+                  <div className="w-full flex flex-col gap-4">
                   {/* Four Pillars */}
-                  <div className="grid grid-cols-4 divide-x divide-slate-100 bg-slate-50/60 border border-slate-200/60 rounded-lg w-full shadow-sm mb-1.5 overflow-hidden">
-                    <div className="flex flex-col items-center py-1 md:py-2 px-0.5 hover:bg-white transition-colors">
-                      <div className="text-[7.5px] md:text-[9px] text-slate-400 uppercase tracking-widest mb-0">
-                        {" "}
-                        Năm{" "}
+                  <div className="grid grid-cols-4 divide-x divide-slate-200/60 bg-white border border-slate-200/80 rounded-xl w-full shadow-sm mt-2">
+                    <div className="flex flex-col items-center py-3 px-1 hover:bg-slate-50 transition-colors">
+                      <div className="text-[10px] md:text-[11px] text-slate-400 font-medium uppercase tracking-widest mb-1">
+                        NĂM
                       </div>
-                      <div className="text-[9.5px] md:text-sm font-black text-amber-700 uppercase tracking-tighter text-center">
-                        {" "}
-                        {baguaLunarInfo?.lunarYearName}{" "}
+                      <div className="text-[12px] md:text-sm font-bold text-[#b45309] uppercase tracking-tight text-center">
+                        {baguaLunarInfo?.lunarYearName}
                       </div>
                     </div>
-                    <div className="flex flex-col items-center py-1 md:py-2 px-0.5 hover:bg-white transition-colors">
-                      <div className="text-[7.5px] md:text-[9px] text-slate-400 uppercase tracking-widest mb-0">
-                        {" "}
-                        Tháng{" "}
+                    <div className="flex flex-col items-center py-3 px-1 hover:bg-slate-50 transition-colors">
+                      <div className="text-[10px] md:text-[11px] text-slate-400 font-medium uppercase tracking-widest mb-1">
+                        THÁNG
                       </div>
-                      <div className="text-[9.5px] md:text-sm font-black text-amber-700 uppercase tracking-tighter text-center">
-                        {" "}
-                        {baguaLunarInfo?.lunarMonthName}{" "}
+                      <div className="text-[12px] md:text-sm font-bold text-[#b45309] uppercase tracking-tight text-center">
+                        {baguaLunarInfo?.lunarMonthName}
                       </div>
                     </div>
-                    <div className="flex flex-col items-center py-1 md:py-2 px-0.5 hover:bg-white transition-colors">
-                      <div className="text-[7.5px] md:text-[9px] text-slate-400 uppercase tracking-widest mb-0">
-                        {" "}
-                        Ngày{" "}
+                    <div className="flex flex-col items-center py-3 px-1 hover:bg-slate-50 transition-colors">
+                      <div className="text-[10px] md:text-[11px] text-slate-400 font-medium uppercase tracking-widest mb-1">
+                        NGÀY
                       </div>
-                      <div className="text-[9.5px] md:text-sm font-black text-amber-700 uppercase tracking-tighter text-center">
-                        {" "}
-                        {baguaLunarInfo?.lunarDayName}{" "}
+                      <div className="text-[12px] md:text-sm font-bold text-[#b45309] uppercase tracking-tight text-center">
+                        {baguaLunarInfo?.lunarDayName}
                       </div>
                     </div>
-                    <div className="flex flex-col items-center py-1 md:py-2 px-0.5 bg-amber-50/50 hover:bg-amber-100/30 transition-colors">
-                      <div className="text-[7.5px] md:text-[9px] text-amber-600/70 uppercase tracking-widest mb-0">
-                        {" "}
-                        Giờ{" "}
+                    <div className="flex flex-col items-center py-3 px-1 bg-[#fffbeb] hover:bg-[#fef3c7] transition-colors rounded-r-xl">
+                      <div className="text-[10px] md:text-[11px] text-[#b45309]/70 font-medium uppercase tracking-widest mb-1">
+                        GIỜ (LẬP QUẺ)
                       </div>
-                      <div className="text-[9.5px] md:text-sm font-black text-amber-800 uppercase tracking-tighter text-center">
-                        {" "}
-                        {baguaLunarInfo?.lunarHourName}{" "}
+                      <div className="text-[12px] md:text-sm font-bold text-[#92400e] uppercase tracking-tight text-center">
+                        {baguaLunarInfo?.lunarHourName}
                       </div>
                     </div>
                   </div>
 
                   {/* 1. Lập Tiên Thiên - Âm Lịch */}
-                  <div className="w-full border-t border-slate-200/60 flex flex-col items-center pt-2">
-                    <div className="text-[9px] md:text-[11px] font-bold uppercase tracking-widest text-blue-600 mb-2 bg-blue-50 border border-blue-100 px-2 py-1 rounded shadow-sm text-center">
-                      Quẻ Tiên Thiên - Âm Lịch ({baguaLunarInfo?.sum})
+                  <div className="w-full flex flex-col items-center pt-2">
+                    <div className="text-[10px] md:text-[12px] font-bold uppercase tracking-widest text-blue-600 mb-4 bg-blue-50 border border-blue-200 px-4 py-1.5 rounded-full shadow-sm text-center inline-block">
+                      Quẻ Lập Tiên Thiên - Âm Lịch (Tổng {baguaLunarInfo?.sum})
                     </div>
-                    <div className="grid grid-cols-2 gap-2 w-full justify-items-center">
+                    <div className="flex flex-row justify-center items-stretch w-full max-w-full space-x-1 sm:space-x-2 md:space-x-3 px-1">
                       <HexagramDisplay
                         upper={mainUpper}
                         lower={mainLower}
@@ -6406,7 +6400,7 @@ Yêu cầu: Hãy viết một đoạn CHỈ 2 CÂU cực kỳ súc tích: Câu 1
                       <HexagramDisplay
                         upper={changedUpper}
                         lower={changedLower}
-                        title="Quẻ Biến"
+                        title="Quẻ Biến (Tương lai)"
                         isChangedView={true}
                         palaceUpper={getPalaceInfo(mainUpper, mainLower).palace}
                         palaceLower={getPalaceInfo(mainUpper, mainLower).palace}
@@ -6420,11 +6414,12 @@ Yêu cầu: Hãy viết một đoạn CHỈ 2 CÂU cực kỳ súc tích: Câu 1
                   </div>
 
                   {/* 2. Biến Quẻ Theo Từng Trụ (Âm) */}
-                  <div className="w-full mt-2 pt-2 border-t border-slate-200 flex flex-col items-center">
-                    <div className="text-[8px] font-bold uppercase tracking-widest text-slate-400 mb-2 text-center">
-                      Biến Theo Từng Trụ Âm (Dư chia 6)
+                  <div className="w-full mt-4 flex flex-col items-center">
+                    <div className="text-[10px] font-bold uppercase tracking-widest text-slate-400 mb-4 text-center px-4 w-full">
+                      Biến Quẻ Theo Từng Trụ (Tính Từ Số Dư Chia 6 Của Năm,
+                      Tháng, Ngày, Giờ, Tổng Âm)
                     </div>
-                    <div className="grid grid-cols-2 gap-2 w-full justify-items-center">
+                    <div className="flex flex-row justify-center items-stretch w-full max-w-full space-x-1 sm:space-x-2 md:space-x-3 px-1">
                       <HexagramDisplay
                         upper={mainUpper}
                         lower={mainLower}
@@ -6440,7 +6435,7 @@ Yêu cầu: Hãy viết một đoạn CHỈ 2 CÂU cực kỳ súc tích: Câu 1
                       <HexagramDisplay
                         upper={secondChangedUpper}
                         lower={secondChangedLower}
-                        title="Quẻ Biến"
+                        title="Quẻ Biến (Tứ Trụ)"
                         isChangedView={true}
                         palaceUpper={getPalaceInfo(mainUpper, mainLower).palace}
                         palaceLower={getPalaceInfo(mainUpper, mainLower).palace}
@@ -6454,11 +6449,12 @@ Yêu cầu: Hãy viết một đoạn CHỈ 2 CÂU cực kỳ súc tích: Câu 1
                   </div>
 
                   {/* 3. Lập Tiên Thiên - Dương Lịch */}
-                  <div className="w-full mt-2 pt-2 border-t border-slate-200 flex flex-col items-center">
-                    <div className="text-[9px] md:text-[11px] font-bold uppercase tracking-widest text-rose-600 mb-2 bg-rose-50 border border-rose-100 px-2 py-1 rounded shadow-sm text-center">
-                      Quẻ Tiên Thiên - Dương Lịch ({baguaLunarInfo?.solarSum})
+                  <div className="w-full mt-6 pt-4 border-t border-slate-200/50 flex flex-col items-center">
+                    <div className="text-[10px] md:text-[12px] font-bold uppercase tracking-widest text-rose-600 mb-4 bg-rose-50 border border-rose-200 px-4 py-1.5 rounded-full shadow-sm text-center inline-block">
+                      Quẻ Lập Tiên Thiên - Dương Lịch (Tổng{" "}
+                      {baguaLunarInfo?.solarSum})
                     </div>
-                    <div className="grid grid-cols-2 gap-2 w-full justify-items-center">
+                    <div className="flex flex-row justify-center items-stretch w-full max-w-full space-x-1 sm:space-x-2 md:space-x-3 px-1">
                       <HexagramDisplay
                         upper={solarMainUpper}
                         lower={solarMainLower}
@@ -6489,11 +6485,12 @@ Yêu cầu: Hãy viết một đoạn CHỈ 2 CÂU cực kỳ súc tích: Câu 1
                   </div>
 
                   {/* 4. Biến Quẻ Theo Từng Trụ Tiên Thiên (Dương) */}
-                  <div className="w-full mt-2 pt-2 border-t border-slate-200 flex flex-col items-center">
-                    <div className="text-[8px] font-bold uppercase tracking-widest text-slate-400 mb-2 text-center">
-                      Biến Theo Từng Trụ Dương (Dư chia 6)
+                  <div className="w-full mt-4 flex flex-col items-center">
+                    <div className="text-[10px] font-bold uppercase tracking-widest text-slate-400 mb-4 text-center px-4 w-full">
+                      Biến Quẻ Theo Từng Trụ Tiên Thiên (Số Dư Chia 6 Của Năm,
+                      Tháng, Ngày, Giờ, Phút, Tổng Dương)
                     </div>
-                    <div className="grid grid-cols-2 gap-2 w-full justify-items-center">
+                    <div className="flex flex-row justify-center items-stretch w-full max-w-full space-x-1 sm:space-x-2 md:space-x-3 px-1">
                       <HexagramDisplay
                         upper={solarMainUpper}
                         lower={solarMainLower}
@@ -6509,7 +6506,7 @@ Yêu cầu: Hãy viết một đoạn CHỈ 2 CÂU cực kỳ súc tích: Câu 1
                       <HexagramDisplay
                         upper={solarSecondChangedUpper}
                         lower={solarSecondChangedLower}
-                        title="Quẻ Biến"
+                        title="Quẻ Biến (Lục Trụ)"
                         isChangedView={true}
                         palaceUpper={
                           getPalaceInfo(solarMainUpper, solarMainLower).palace
@@ -6596,6 +6593,7 @@ Yêu cầu: Hãy viết một đoạn CHỈ 2 CÂU cực kỳ súc tích: Câu 1
                     </div>
                   </div>
                 </div>
+              </div>
               </div>
             </div>
           </React.Fragment>

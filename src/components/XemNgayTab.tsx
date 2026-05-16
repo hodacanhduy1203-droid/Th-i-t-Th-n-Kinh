@@ -81,49 +81,49 @@ const TERMS_EXPLAIN: Record<string, string> = {
 };
 
 const TRUC_MAP: Record<string, MappingItem> = {
-  '建': { name: 'Kiến', desc: 'Tốt cho xuất hành, nhậm chức. Tránh động thổ.' },
-  '除': { name: 'Trừ', desc: 'Tốt cho cúng bái, chữa bệnh. Tránh khai trương.' },
-  '满': { name: 'Mãn', desc: 'Tốt cho xây dựng, sửa chữa. Tránh kiện tụng.' },
-  '平': { name: 'Bình', desc: 'Tốt cho mọi việc bình thường. Tránh tranh chấp.' },
-  '定': { name: 'Định', desc: 'Tốt cho cưới hỏi, ký kết. Tránh kiện tụng.' },
-  '执': { name: 'Chấp', desc: 'Tốt cho xây dựng. Tránh dời nhà.' },
-  '破': { name: 'Phá', desc: 'Tốt cho phá dỡ, chữa bệnh. Tránh cưới hỏi.' },
-  '危': { name: 'Nguy', desc: 'Tốt cho vạn sự (với tâm thế cẩn trọng). Tránh đi xa.' },
-  '成': { name: 'Thành', desc: 'Đại cát, tốt cho mọi việc khởi đầu.' },
-  '收': { name: 'Thu', desc: 'Tốt cho nhập kho, cầu tài. Tránh cưới hỏi.' },
-  '开': { name: 'Khai', desc: 'Tốt cho khai trương, động thổ. Tránh an táng.' },
-  '闭': { name: 'Bế', desc: 'Tốt cho đắp đập, lấp hang. Tránh mọi sự.' },
+  '建': { name: 'Kiến', desc: 'Ngày tốt cho các việc bắt đầu, khởi công, nhậm chức, xuất hành, đính hôn. Tuy nhiên kỵ động thổ.' },
+  '除': { name: 'Trừ', desc: 'Ngày tốt để giải trừ các việc xấu, tẩy trần, cúng bái, chữa bệnh, cắt tóc. Kỵ các việc khai trương.' },
+  '满': { name: 'Mãn', desc: 'Ngày tốt cho việc cầu tài lộc, xây dựng, sửa chữa nhà cửa, lắp đặt thiết bị. Kỵ việc kiện tụng.' },
+  '平': { name: 'Bình', desc: 'Ngày trung tính, tốt cho các việc bình thường, tu sửa nhỏ, gặp gỡ bạn bè. Tránh khởi đầu việc lớn.' },
+  '定': { name: 'Định', desc: 'Ngày tốt cho việc ký kết hợp đồng, cưới hỏi, giao dịch, lập kế hoạch lâu dài. Kỵ kiện tụng.' },
+  '执': { name: 'Chấp', desc: 'Ngày tốt cho việc xây dựng, sửa sang, săn bắn. Không nên dời nhà, xuất vốn đầu tư lớn.' },
+  '破': { name: 'Phá', desc: 'Ngày tốt cho việc phá dỡ, dẹp bỏ cái cũ, chữa bệnh nan y. Rất kỵ cưới hỏi, khai trương.' },
+  '危': { name: 'Nguy', desc: 'Ngày tốt cho các việc tế tự, thi cử, nhậm chức (với tâm thế thận trọng). Tránh đi xa, leo cao.' },
+  '成': { name: 'Thành', desc: 'Ngày đại cát, làm việc gì cũng dễ thành công, đặc biệt tốt cho khai trương, cưới hỏi, xây dựng.' },
+  '收': { name: 'Thu', desc: 'Ngày tốt cho việc thu hoạch, nhập kho, cầu tài, đòi nợ. Kỵ các việc cưới hỏi, tang lễ.' },
+  '开': { name: 'Khai', desc: 'Ngày tốt cho các việc khởi đầu mới, khai trương, mở cửa hàng, động thổ. Kỵ các việc an táng.' },
+  '闭': { name: 'Bế', desc: 'Ngày tốt cho các việc che đậy, đắp đập, lấp hang hố. Tránh các việc khởi công, cưới hỏi.' },
 };
 
 const XIU_MAP: Record<string, {name: string, msg: string}> = {
-  '角': { name: 'Giác', msg: 'Tốt cho cưới hỏi, thi cử. Tránh an táng.' },
-  '亢': { name: 'Cang', msg: 'Tốt cho khai trương. Tránh kiện tụng.' },
-  '氐': { name: 'Đê', msg: 'Tốt cho xây dựng. Tránh cưới hỏi.' },
-  '房': { name: 'Phòng', msg: 'Đại cát, vạn sự hanh thông.' },
-  '心': { name: 'Tâm', msg: 'Xấu cho vạn sự, kỵ khởi công.' },
-  '尾': { name: 'Vĩ', msg: 'Tốt cho xây dựng, an táng.' },
-  '箕': { name: 'Cơ', msg: 'Tốt cho cầu tài, nhậm chức.' },
-  '斗': { name: 'Đẩu', msg: 'Đại cát, tốt cho cưới hỏi, thi cử.' },
-  '牛': { name: 'Ngưu', msg: 'Xấu cho cưới hỏi, xây dựng.' },
-  '女': { name: 'Nữ', msg: 'Kỵ mọi việc, nhất là cưới hỏi.' },
-  '虚': { name: 'Hư', msg: 'Xấu cho xây dựng, khởi công.' },
-  '危': { name: 'Nguy', msg: 'Tốt cho thi cử, nhậm chức.' },
-  '室': { name: 'Thất', msg: 'Đại cát, vạn sự hanh thông.' },
-  '壁': { name: 'Bích', msg: 'Tốt cho xây dựng, dời chỗ.' },
-  '奎': { name: 'Khuê', msg: 'Tốt cho văn chương, thi cử.' },
-  '娄': { name: 'Lâu', msg: 'Tốt cho thi cử, nhận tước.' },
-  '胃': { name: 'Vị', msg: 'Cát, tốt cho vạn sự.' },
-  '昴': { name: 'Mão', msg: 'Xấu, kỵ dời nhà, đi xa.' },
-  '毕': { name: 'Tất', msg: 'Cát, tốt cho cưới hỏi, giao dịch.' },
-  '觜': { name: 'Chủy', msg: 'Xấu cho xây đắp, dời chỗ.' },
-  '参': { name: 'Sâm', msg: 'Tốt cho kiện tụng, nhậm chức.' },
-  '井': { name: 'Tỉnh', msg: 'Xấu cho an táng, cưới hỏi.' },
-  '鬼': { name: 'Quỷ', msg: 'Xấu mọi việc, kỵ khởi nghiệp.' },
-  '柳': { name: 'Liễu', msg: 'Xấu cho cưới hỏi, tang lễ.' },
-  '星': { name: 'Tinh', msg: 'Tốt cho xây dựng. Tránh cưới hỏi.' },
-  '张': { name: 'Trương', msg: 'Cát, tốt cho cầu tài, thi chức.' },
-  '翼': { name: 'Dực', msg: 'Cát, tốt cho cưới hỏi, thi cử.' },
-  '轸': { name: 'Chẩn', msg: 'Đại cát, vạn sự như ý.' },
+  '角': { name: 'Giác', msg: 'Tốt cho cưới hỏi, thi cử, xây dựng. Tránh an táng, sửa mộ.' },
+  '亢': { name: 'Cang', msg: 'Tốt cho khai trương, ký kết, cầu tài. Tránh kiện tụng, tranh chấp.' },
+  '氐': { name: 'Đê', msg: 'Tốt cho xây dựng, tu sửa, dọn dẹp. Tránh cưới hỏi, đính hôn.' },
+  '房': { name: 'Phòng', msg: 'Đại cát, vạn sự hanh thông, tốt cho mọi khởi đầu và cầu danh lợi.' },
+  '心': { name: 'Tâm', msg: 'Hung tinh, kỵ khởi công, xây dựng, cưới hỏi. Cần cẩn trọng mọi việc.' },
+  '尾': { name: 'Vĩ', msg: 'Tốt cho xây dựng, an táng, nhập trạch. Thuận lợi cho gia đạo.' },
+  '箕': { name: 'Cơ', msg: 'Tốt cho cầu tài, nhậm chức, giao dịch làm ăn. Kỵ việc cưới hỏi.' },
+  '斗': { name: 'Đẩu', msg: 'Đại cát, tốt cho cưới hỏi, thi cử, cầu danh vọng và thăng tiến.' },
+  '牛': { name: 'Ngưu', msg: 'Xấu cho cưới hỏi, xây dựng nhà cửa. Kỵ việc tranh chấp pháp lý.' },
+  '女': { name: 'Nữ', msg: 'Kỵ mọi việc, đặc biệt là cưới hỏi, dời chỗ ở hay khởi công xây dựng.' },
+  '虚': { name: 'Hư', msg: 'Xấu cho xây dựng, khởi công, khai trương. Tránh các việc trọng đại.' },
+  '危': { name: 'Nguy', msg: 'Tốt cho thi cử, nhậm chức, học hành. Kỵ việc đi xa bằng đường thủy.' },
+  '室': { name: 'Thất', msg: 'Đại cát, vạn sự hanh thông, tốt cho xây dựng, cưới hỏi, khai trương.' },
+  '壁': { name: 'Bích', msg: 'Tốt cho xây dựng, dời chỗ, nhậm chức. Cát tinh cho việc gia đạo.' },
+  '奎': { name: 'Khuê', msg: 'Tốt cho văn chương, thi cử, học hành. Kỵ việc kiện tụng, tranh cãi.' },
+  '娄': { name: 'Lâu', msg: 'Tốt cho thi cử, nhận tước, khai trương cửa hàng. Cát lợi về tài lộc.' },
+  '胃': { name: 'Vị', msg: 'Cát tinh, tốt cho vạn sự, đặc biệt là cầu tài và xây dựng cơ nghiệp.' },
+  '昴': { name: 'Mão', msg: 'Xấu, kỵ dời nhà, đi xa, cưới hỏi. Cần giữ gìn sức khỏe, phòng tai ương.' },
+  '毕': { name: 'Tất', msg: 'Cát, tốt cho cưới hỏi, giao dịch, cầu tự và các việc hỷ sự.' },
+  '觜': { name: 'Chủy', msg: 'Xấu cho xây đắp, dời chỗ, sửa sang nhà cửa. Kỵ việc xuất vốn lớn.' },
+  '参': { name: 'Sâm', msg: 'Tốt cho kiện tụng, nhậm chức, học hành. Tránh việc an táng.' },
+  '井': { name: 'Tỉnh', msg: 'Xấu cho an táng, cưới hỏi, xây dựng. Tránh mâu thuẫn gia đình.' },
+  '鬼': { name: 'Quỷ', msg: 'Hung tinh, kỵ mọi việc quan trọng, nhất là khởi nghiệp và cưới hỏi.' },
+  '柳': { name: 'Liễu', msg: 'Xấu cho cưới hỏi, tang lễ, dời chỗ. Cần đề phòng kẻ gian quấy phá.' },
+  '星': { name: 'Tinh', msg: 'Tốt cho xây dựng, sửa sang. Tránh cưới hỏi, đính hôn.' },
+  '张': { name: 'Trương', msg: 'Cát, tốt cho cầu tài, thi cử, nhậm chức và gặp gỡ quý nhân.' },
+  '翼': { name: 'Dực', msg: 'Cát, tốt cho cưới hỏi, thi cử, làm việc thiện và cúng bái.' },
+  '轸': { name: 'Chẩn', msg: 'Đại cát, vạn sự như ý, tốt cho việc đi xa và cầu bình an.' },
 };
 
 const translateGanZhi = (text: string) => {
@@ -766,47 +766,92 @@ ${info}`;
         </section>
 
         {/* Reading List: Luận Giải Chi Tiết */}
-        <section className="bg-amber-50/40 p-2.5 rounded-xl border border-amber-200/60 shadow-sm mt-1 focus-mode-compact-reading">
-           <h2 className="text-[10px] font-black text-amber-800 uppercase tracking-widest mb-2 flex items-center justify-center border-b border-amber-200/30 pb-1.5"> LUẬN GIẢI CHI TIẾT </h2>
+        <section className="bg-amber-50/40 p-3 rounded-xl border border-amber-200/60 shadow-sm mt-1 focus-mode-compact-reading">
+           <h2 className="text-[12px] font-black text-amber-800 uppercase tracking-widest mb-3 flex items-center justify-center border-b border-amber-200/30 pb-2"> LUẬN GIẢI CHI TIẾT </h2>
            
-           <div className="space-y-2">
-              {/* Sao tốt xấu */}
+           <div className="space-y-4">
+              {/* Sao tốt */}
+              {data.luckyStarsList.length > 0 && (
               <div>
-                 <h3 className="text-[10px] font-black text-amber-900 mb-0.5">Cát - Hung tinh:</h3>
-                 <p className="text-[10px] font-medium text-slate-700 leading-relaxed pl-2 border-l-2 border-amber-400">
-                   {data.luckyStarsList.length > 0 ? (
-                     data.luckyStarsList.map((s: any) => <span key={s.name}><strong className="text-emerald-700">{s.name}</strong>, </span>)
-                   ) : ''}
-                   {data.badStarsList.length > 0 ? (
-                     data.badStarsList.map((s: any) => <span key={s.name}><strong className="text-rose-700">{s.name}</strong>, </span>)
-                   ) : ''}
+                 <h3 className="text-[11px] font-black text-amber-900 mb-1">Sao tốt:</h3>
+                 <p className="text-[11px] font-medium text-slate-700 leading-relaxed pl-2 border-l-2 border-emerald-400">
+                    {data.luckyStarsList.map((s: any, idx: number) => (
+                       <span key={s.name}>
+                          <strong className="text-emerald-700">{s.name}:</strong> {s.desc}{idx < data.luckyStarsList.length - 1 ? ' ' : ''}
+                       </span>
+                    ))}
+                 </p>
+              </div>
+              )}
+
+              {/* Sao xấu */}
+              {data.badStarsList.length > 0 && (
+              <div>
+                 <h3 className="text-[11px] font-black text-amber-900 mb-1">Sao xấu:</h3>
+                 <p className="text-[11px] font-medium text-slate-700 leading-relaxed pl-2 border-l-2 border-rose-400">
+                    {data.badStarsList.map((s: any, idx: number) => (
+                       <span key={s.name}>
+                          <strong className="text-rose-700">{s.name}:</strong> {s.desc}{idx < data.badStarsList.length - 1 ? ' ' : ''}
+                       </span>
+                    ))}
+                 </p>
+              </div>
+              )}
+
+              {/* Giờ xuất hành */}
+              <div>
+                 <h3 className="text-[11px] font-black text-amber-900 mb-1">Giờ xuất hành:</h3>
+                 <div className="text-[11px] font-medium text-slate-700 leading-relaxed pl-2 space-y-0.5">
+                    {data.lyThuanPhong.map((ltp: any) => (
+                       <div key={ltp.name}>
+                          - <strong className="text-amber-800">Giờ {ltp.name}:</strong> {ltp.timesDesc}
+                       </div>
+                    ))}
+                 </div>
+              </div>
+
+              {/* Ngày đại kỵ */}
+              {data.conflictAges && (
+                 <div className="border-t border-amber-200/30 pt-3">
+                    <h3 className="text-[11px] font-black text-amber-900 mb-1">Ngày đại kỵ:</h3>
+                    <p className="text-[11px] font-medium text-slate-700 leading-relaxed pl-2">
+                       Ngày này cần tránh tuổi: {data.conflictAges}
+                    </p>
+                 </div>
+              )}
+
+              {/* Thập Nhị Bát Tú */}
+              <div className="border-t border-amber-200/30 pt-3">
+                 <h3 className="text-[11px] font-black text-amber-900 mb-1">Thập Nhị Bát Tú - Sao {data.xiuDetails.name}:</h3>
+                 <p className="text-[11px] font-medium text-slate-700 leading-relaxed pl-2">
+                    <strong>Luận giải:</strong> {data.xiuDetails.msg}
                  </p>
               </div>
 
-              <div className="grid grid-cols-2 gap-2 border-t border-amber-200/30 pt-2">
-                <div>
-                   <h3 className="text-[9px] font-black text-amber-900 mb-0.5 uppercase">Trực {data.trucName}</h3>
-                   <p className="text-[9px] text-slate-600 leading-tight line-clamp-2 italic">
-                     {TRUC_MAP[data.lunarObj.getDayZhi()]?.desc || 'Luận giải trực...'}
-                   </p>
-                </div>
-                <div>
-                   <h3 className="text-[9px] font-black text-amber-900 mb-0.5 uppercase">Sao {data.xiuDetails.name}</h3>
-                   <p className="text-[9px] text-slate-600 leading-tight line-clamp-2 italic">
-                     {data.xiuDetails.msg || 'Luận giải tú...'}
-                   </p>
-                </div>
+              {/* Thập Nhị Kiến Trừ */}
+              <div className="border-t border-amber-200/30 pt-3">
+                 <h3 className="text-[11px] font-black text-amber-900 mb-1">Thập Nhị Kiến Trừ - Trực {data.trucName}:</h3>
+                 <p className="text-[11px] font-medium text-slate-700 leading-relaxed pl-2">
+                    <strong>Luận giải:</strong> {data.truc.desc}
+                 </p>
               </div>
 
-              <div className="border-t border-amber-200/30 pt-2">
-                 <h3 className="text-[9px] font-black text-amber-900 mb-0.5">GIỜ XUẤT HÀNH (LÝ THUẦN PHONG):</h3>
-                 <div className="text-[9px] font-medium text-slate-700 leading-relaxed pl-2 space-y-0.5">
-                   <p><strong>Đại An:</strong> Mọi việc tốt lành. Cầu tài hướng Tây Nam.</p>
-                   <p><strong>Lưu Niên:</strong> Sự nghiệp khó thành. Kiện cáo nên hoãn.</p>
-                   <p><strong>Tốc Hỷ:</strong> Tin vui sắp tới. Sắp có tài lộc lợi ích.</p>
-                   <p><strong>Xích Khẩu:</strong> Dễ cãi cọ, thị phi. Giữ mồm miệng.</p>
-                   <p><strong>Tiểu Cát:</strong> Rất tốt lành. Có tài lợi, bệnh tật tiêu tan.</p>
-                   <p><strong>Không Vong:</strong> Khó nên việc lớn, hao tài, dễ mất cắp.</p>
+              {/* Giờ xuất hành chi tiết */}
+              <div className="border-t border-amber-200/30 pt-3">
+                 <h3 className="text-[11px] font-black text-amber-900 mb-1">Giờ xuất hành (Lý Thuần Phong):</h3>
+                 <div className="text-[11px] font-medium text-slate-700 leading-relaxed pl-2 space-y-1.5">
+                    {data.lyThuanPhong.map((ltp: any) => (
+                      <p key={ltp.name}>
+                        <strong className="text-amber-800">Giờ {ltp.name} ({ltp.timesDesc}):</strong> {
+                          ltp.name === 'Đại An' ? 'Mọi việc đa phần tốt lành. Người cầu tài đi hướng Tây Nam, xuất hành bình yên, gia đạo yên bình.' :
+                          ltp.name === 'Lưu Niên' ? 'Sự nghiệp khó thành, mọi việc trắc trở mờ mịt. Kiện cáo nên hoãn. Đi hướng Nam tìm kẻ mất cắp.' :
+                          ltp.name === 'Tốc Hỷ' ? 'Tin vui sắp tới. Sắp có tài lộc lợi ích, chăn nuôi gặp thuận lợi, đi xa gặp gỡ quan lộ may mắn.' :
+                          ltp.name === 'Xích Khẩu' ? 'Dễ cáu gắt khẩu chiến, hay cãi cọ, dễ dính thị phi. Tốt nhất giữ mồm miệng, không nên làm việc lớn.' :
+                          ltp.name === 'Tiểu Cát' ? 'Rất tốt lành. Có tiểu lợi, mọi việc thuận lợi. Có tin mừng, bệnh tật tiêu tan, gặp nhiều may mắn.' :
+                          ltp.name === 'Không Vong' ? 'Khó nên việc, hao tài, tiến thoái lưỡng nan. Bệnh tật, mất cắp dễ xảy ra.' : ''
+                        }
+                      </p>
+                    ))}
                  </div>
               </div>
            </div>
