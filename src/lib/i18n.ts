@@ -46,7 +46,7 @@ export const translations = {
 
     // TuVi/TuTru settings
     'settings.title': 'Cấu hình AI',
-    'settings.apiKey': 'Gemini API Key của bạn',
+    'settings.apiKey': 'AI API Key của bạn',
     'settings.apiPlaceholder': 'Nhập API Key (ví dụ: AIza...)',
     'settings.instructions': 'Để lấy mã này, bạn hãy truy cập Google AI Studio. Việc sử dụng API Key cá nhân giúp bạn hoàn toàn tự chủ và không gặp giới hạn từ hệ thống chung.',
     'settings.saveConfig': 'Lưu cấu hình',
@@ -110,13 +110,13 @@ export const translations = {
     'bazi.year': 'NĂM',
     'bazi.month': 'THÁNG',
     'bazi.day': 'NGÀY',
-    'ai.geminiLuanGiai': 'Gemini AI Luận Giải',
+    'ai.geminiLuanGiai': 'Đại Sư AI Luận Giải',
     'ai.advancedBaziAnalysis': 'Advanced Bazi Analysis',
     'ai.analyzing': 'Đang phân tích...',
     'ai.startAnalysis': 'Bắt đầu luận đoán',
-    'ai.chatPlaceholder': 'Nhập câu hỏi cho Gemini...',
+    'ai.chatPlaceholder': 'Nhập câu hỏi cho Đại Sư AI...',
     'ai.send': 'Gửi',
-    'ai.emptyStateText': 'Nhấn nút "Bắt đầu luận đoán" hoặc nhập câu hỏi bên dưới để Gemini AI đồng hành cùng lá số của bạn.',
+    'ai.emptyStateText': 'Nhấn nút "Bắt đầu luận đoán" hoặc nhập câu hỏi bên dưới để Đại Sư AI đồng hành cùng lá số của bạn.',
     'label.browserStorage': 'Lưu trữ trên trình duyệt này',
   },
   en: {
@@ -129,6 +129,7 @@ export const translations = {
     // Tabs
     'tab.lich_bat_quai': 'Calendar',
     'tab.gieo_que': 'Divination',
+    'tab.xem_ngay': 'Date Selection',
     'tab.hon_nhan': 'Marriage',
     'tab.tu_tru': 'Four Pillars (Bazi)',
     'tab.tu_vi': 'Zi Wei Chart',
@@ -165,7 +166,7 @@ export const translations = {
 
     // TuVi/TuTru settings
     'settings.title': 'AI Configuration',
-    'settings.apiKey': 'Your Gemini API Key',
+    'settings.apiKey': 'Your AI API Key',
     'settings.apiPlaceholder': 'Enter API Key (e.g. AIza...)',
     'settings.instructions': 'To get this key, visit Google AI Studio. Using a personal API Key makes you independent and bypasses the shared system ratelimits.',
     'settings.saveConfig': 'Save Configuration',
@@ -229,13 +230,13 @@ export const translations = {
     'bazi.year': 'YEAR',
     'bazi.month': 'MONTH',
     'bazi.day': 'DAY',
-    'ai.geminiLuanGiai': 'Gemini AI Analysis',
+    'ai.geminiLuanGiai': 'AI Master Analysis',
     'ai.advancedBaziAnalysis': 'Advanced Bazi Analysis',
     'ai.analyzing': 'Analyzing...',
     'ai.startAnalysis': 'Start Analysis',
-    'ai.chatPlaceholder': 'Ask Gemini a question...',
+    'ai.chatPlaceholder': 'Ask the AI Master a question...',
     'ai.send': 'Send',
-    'ai.emptyStateText': 'Click "Start Analysis" or ask a question below to let Gemini AI interpret your chart.',
+    'ai.emptyStateText': 'Click "Start Analysis" or ask a question below to let the AI interpret your chart.',
     'label.browserStorage': 'Stored on this browser',
   }
 };

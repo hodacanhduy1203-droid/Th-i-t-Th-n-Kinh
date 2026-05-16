@@ -906,6 +906,11 @@ ${
                   <div className="p-3 bg-[#fffbf0]/40 border-t border-amber-200/40 space-y-3">
                     <div className="relative group">
                       <textarea
+                        onFocus={(e) => {
+                          setTimeout(() => {
+                            e.target.scrollIntoView({ behavior: "smooth", block: "center" });
+                          }, 300);
+                        }}
                         disabled={isAiLoading}
                         value={
                           userQuestion +

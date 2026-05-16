@@ -471,7 +471,7 @@ export default function KyMonTab({ onRequireApiKey }: Props) {
     setIsAnalyzing(true);
 
     try {
-      const systemInstruction = `Bạn là một chuyên gia uyên bác về **Kỳ Môn Độn Giáp**. 
+      const systemInstruction = `Bạn là Đại Tông Sư uyên bác về **Kỳ Môn Độn Giáp**, tinh thông các bí điển: "Kỳ Môn Độn Giáp Bí Tí Toàn Thư" (Khổng Minh - Lưu Bá Ôn), "Kỳ Môn Độn Giáp Thống Tông", "Kỳ Môn Pháp Khiếu", "Kim Hàm Ngọc Kính", "Kỳ Môn Chỉ Quy" và "Kỳ Môn Độn Giáp Tuyệt Học". 
 
 **QUY TẮC LAYOUT BẮT BUỘC (RẤT QUAN TRỌNG):**
 - Toàn bộ nội dung trả lời phải TRÀN VIỀN TỐI ĐA, không có lề trái-phải (margin: 0).
@@ -487,10 +487,11 @@ export default function KyMonTab({ onRequireApiKey }: Props) {
 - TRỰC PHÙ: ${qmdgData.zhiFu} 
 - TRỰC SỬ: ${qmdgData.zhiShi}
 
-**YÊU CẦU NỘI DUNG:**
-1. Hãy xuất kết quả phân tích thật chi tiết, có tâm, logic và có cấu trúc rõ ràng.
-2. Luận giải dùng thuật ngữ chuyên môn: Dụng Thần, Hưu, Sinh, Khai, Cảnh, Tử, Kinh, Đỗ, Thương, Trực Phù, Trực Sử...
-3. Ngôn ngữ: Trang nghiêm, chân thực, uyên bác. Luôn kết thúc bằng việc nhắc nhở về sự linh hoạt và đức độ của con người (Dịch lý tùy thời).</div>`;
+**YÊU CẦU NỘI DUNG LÝ LUẬN:**
+1. Hãy xuất kết quả phân tích thật sâu sắc, có tâm, logic và sắc bén DỰA TRÊN LÝ LUẬN CỦA CÁC KỲ THƯ TRÊN.
+2. Vận dụng linh hoạt các kiến thức: Phán đoán cát hung Dụng Thần (Nhật - Thời, Bản Mệnh, Khách - Chủ). Phân tích kỹ sự sinh khắc của Bát Môn (Hưu, Sinh, Thương, Đỗ, Cảnh, Tử, Kinh, Khai), Cửu Tinh, Bát Thần, Thiên Bàn, Địa Bàn.
+3. Cách phân tích Dụng Thần phải chuẩn xác: Cầu tài (Mậu), Thi cử (Cảnh Môn, Đinh), Bệnh tật (Thiên Nhuế), Tình duyên (Canh/Ất/Lục Hợp)... Từ đó chiếu rọi Dụng Thần đang cư cung nào để khán hình cục sinh/khắc.
+4. Ngôn ngữ: Trang nghiêm, chân thực, uyên bác. Luôn kết thúc bằng việc nhắc nhở "Đức năng thắng số, tùy cơ ứng biến".</div>`;
 
       const userPrompt = questionToUse;
 
@@ -867,6 +868,11 @@ export default function KyMonTab({ onRequireApiKey }: Props) {
 
                 <div className="relative group">
                   <textarea
+                    onFocus={(e) => {
+                      setTimeout(() => {
+                        e.target.scrollIntoView({ behavior: "smooth", block: "center" });
+                      }, 300);
+                    }}
                     disabled={isAnalyzing}
                     className="w-full px-4 py-3 bg-white border border-orange-100 rounded-2xl text-[13px] font-medium focus:outline-none focus:border-orange-400 focus:ring-4 focus:ring-orange-500/5 min-h-[44px] max-h-[120px] resize-none shadow-sm transition-all disabled:opacity-50 placeholder:text-orange-900/20"
                     placeholder="Hỏi AI về cát hung, mưu sự..."

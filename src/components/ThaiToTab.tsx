@@ -2608,6 +2608,11 @@ ${pulseDetails}`;
             )}
               <div className="relative group">
                 <textarea
+                  onFocus={(e) => {
+                    setTimeout(() => {
+                      e.target.scrollIntoView({ behavior: "smooth", block: "center" });
+                    }, 300);
+                  }}
                   disabled={isAnalyzing}
                   className="w-full p-5 bg-slate-50 border border-slate-100 rounded-3xl text-sm font-medium focus:outline-none focus:border-indigo-300 focus:ring-4 focus:ring-indigo-50 min-h-[100px] max-h-[200px] resize-none shadow-inner transition-all disabled:opacity-50"
                   placeholder="Hỏi AI về cát hung, thời cơ hoặc đại hạn dựa trên đồ bản hiện tại..."

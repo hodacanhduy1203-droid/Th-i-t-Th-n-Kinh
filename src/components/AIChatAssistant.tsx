@@ -138,7 +138,7 @@ export const AIChatAssistant: React.FC<AIChatAssistantProps> = ({ userProfile, o
                   <h3 className="font-bold text-sm">Chuyên gia phong thủy AI</h3>
                   <div className="flex items-center gap-1.5">
                     <div className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse" />
-                    <span className="text-[10px] text-blue-100">AI Engine: {GEMINI_MODEL}</span>
+                    <span className="text-[10px] text-blue-100">AI Engine: Modern AI Master</span>
                   </div>
                 </div>
               </div>

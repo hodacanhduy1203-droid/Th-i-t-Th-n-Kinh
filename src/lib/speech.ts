@@ -8,11 +8,59 @@ export const setupSpeechSynthesis = () => {
   }
 };
 
+let currentChunks: string[] = [];
+let currentChunkIndex = 0;
+let globalEndCallback: (() => void) | undefined;
+let globalErrorCallback: ((e: any) => void) | undefined;
+
 export const cancelSpeech = () => {
   if (typeof window !== 'undefined' && 'speechSynthesis' in window) {
     window.speechSynthesis.cancel();
   }
+  currentChunks = [];
+  currentChunkIndex = 0;
 };
+
+const speakNextChunk = () => {
+  if (typeof window === 'undefined' || !('speechSynthesis' in window)) return;
+
+  if (currentChunkIndex >= currentChunks.length) {
+    globalEndCallback?.();
+    return;
+  }
+
+  const textChunk = currentChunks[currentChunkIndex];
+  const utterance = new SpeechSynthesisUtterance(textChunk);
+
+  const voices = window.speechSynthesis.getVoices();
+  const viVoice = voices.find((v) => v.lang.toLowerCase().includes("vi"));
+  if (viVoice) {
+    utterance.voice = viVoice;
+  }
+  
+  utterance.lang = "vi-VN";
+  utterance.rate = 1.0;
+  utterance.pitch = 1.0;
+  utterance.volume = 1.0;
+
+  utterance.onend = () => {
+    currentChunkIndex++;
+    // Small delay between chunks to prevent clipping and allow garbage collection
+    setTimeout(speakNextChunk, 50);
+  };
+
+  utterance.onerror = (e) => {
+    console.error("Speech Error on chunk:", e);
+    // Ignore interrupted errors, they happen on natural cancel
+    if (e.error !== 'interrupted' && e.error !== 'canceled') {
+        globalErrorCallback?.(e);
+    }
+    globalEndCallback?.(); // Ensure UI resets
+    cancelSpeech();
+  };
+
+  window.speechSynthesis.speak(utterance);
+}
 
 export const speakText = (
   text: string,
@@ -32,6 +80,7 @@ export const speakText = (
     .replace(/#{1,6}\s?/g, '')
     .replace(/[*_`\[\]]/g, '')
     .replace(/<[^>]+>/g, '')
+    .replace(/\n\n/g, ' . ') // Ensure paragraphs have a pause
     .replace(/(\r\n|\n|\r)/gm, ' ')
     .replace(/\((.*?)\)/g, '$1')
     .trim();
@@ -42,34 +91,21 @@ export const speakText = (
     return;
   }
 
-  const utterance = new SpeechSynthesisUtterance(plainText);
-
-  // Fallback to getting voices directly if onvoiceschanged hasn't fired
-  const voices = window.speechSynthesis.getVoices();
-  const viVoice = voices.find((v) => v.lang.toLowerCase().includes("vi"));
-  if (viVoice) {
-    utterance.voice = viVoice;
-  }
+  // Split into chunks based on punctuation (. ! ?) to avoid the 15-second / length limit of SpeechSynthesis
+  // We match sentences up to ~200 chars.
+  const regex = /([^.!?]+[.!?]+)|([^.!?]+$)/g;
+  const chunksMatch = plainText.match(regex);
   
-  utterance.lang = "vi-VN";
-  utterance.rate = 1.0;
-  utterance.pitch = 1.0;
-  utterance.volume = 1.0;
+  if (!chunksMatch) {
+    currentChunks = [plainText];
+  } else {
+    currentChunks = chunksMatch.map(c => c.trim()).filter(c => c.length > 0);
+  }
 
-  utterance.onstart = () => {
-    // Already called before speak, but can be a safety fallback
-  };
-
-  utterance.onend = () => {
-    onEnd?.();
-  };
-
-  utterance.onerror = (e) => {
-    console.error("Speech Error:", e);
-    onError?.(e);
-    onEnd?.(); // Ensure UI resets
-  };
+  currentChunkIndex = 0;
+  globalEndCallback = onEnd;
+  globalErrorCallback = onError;
 
   onStart?.(); // Instant UI feedback
-  window.speechSynthesis.speak(utterance);
+  speakNextChunk();
 };

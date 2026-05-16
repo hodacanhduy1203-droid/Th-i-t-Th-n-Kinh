@@ -581,186 +581,183 @@ ${info}`;
   };
 
   return (
-    <div className="flex flex-col h-full bg-slate-50 text-slate-800 overflow-y-auto custom-scrollbar pb-32 font-sans">
+    <div className="flex flex-col h-full bg-slate-50 text-slate-800 overflow-y-auto custom-scrollbar pb-20 font-sans">
       {/* Header Sticky */}
-      <section className="px-4 pt-4 pb-4 bg-gradient-to-b from-slate-100 via-slate-50 to-slate-50 sticky top-0 z-40 backdrop-blur-xl border-b border-slate-200">
-        <div className="flex items-center justify-between mb-3 max-w-5xl mx-auto w-full">
-          <div className="flex items-center gap-3">
-             <div className="p-2 bg-gradient-to-br from-amber-400 to-amber-600 rounded-xl shadow-[0_4px_25px_rgba(245,158,11,0.25)]">
-                <CalendarDays className="w-5 h-5 text-white" />
+      <section className="px-2 pt-1 pb-1 bg-gradient-to-b from-slate-100 via-slate-50 to-slate-50 sticky top-0 z-40 backdrop-blur-xl border-b border-slate-200">
+        <div className="flex items-center justify-between mb-1 max-w-5xl mx-auto w-full">
+          <div className="flex items-center gap-1.5 focus-mode-compact-header">
+             <div className="p-1 bg-gradient-to-br from-amber-400 to-amber-600 rounded-md shadow-sm">
+                <CalendarDays className="w-3.5 h-3.5 text-white" />
              </div>
              <div>
-                <h1 className="text-xl font-black text-slate-800 tracking-tight uppercase">Lịch Vạn Niên</h1>
-                <p className="text-sm font-black text-amber-600 uppercase tracking-[0.2em] flex items-center">
-                   PHONG THỦY & TIÊN TRÍ
-                </p>
+                <h1 className="text-sm font-black text-slate-800 tracking-tight uppercase">Lịch Vạn Niên</h1>
+                <p className="text-[8px] font-black text-amber-600 uppercase tracking-widest leading-none">PHONG THỦY & TIÊN TRÍ</p>
              </div>
           </div>
           <button 
             onClick={() => setDateStr(new Date().toISOString().split('T')[0])}
-            className="p-2 bg-slate-100 hover:bg-amber-100 border border-slate-200 rounded-xl transition-all"
+            className="p-1 bg-slate-100 hover:bg-amber-100 border border-slate-200 rounded-md transition-all"
           >
-            <RefreshCw className="w-4 h-4 text-amber-600" />
+            <RefreshCw className="w-3 h-3 text-amber-600" />
           </button>
         </div>
 
-        <div className="flex items-center justify-between p-1 bg-white rounded-2xl border border-slate-200 shadow-sm max-w-lg mx-auto backdrop-blur-sm">
-          <button onClick={() => handleDayNav(-1)} className="p-2 text-amber-600 hover:bg-amber-50 rounded-xl transition-all active:scale-90"><ChevronLeft className="w-5 h-5" /></button>
-          <div className="flex flex-col items-center flex-1 px-3 cursor-pointer">
+        <div className="flex items-center justify-between p-0.5 bg-white rounded-lg border border-slate-200 shadow-sm max-w-lg mx-auto backdrop-blur-sm">
+          <button onClick={() => handleDayNav(-1)} className="p-1 text-amber-600 hover:bg-amber-50 rounded-md transition-all active:scale-90"><ChevronLeft className="w-3 h-3" /></button>
+          <div className="flex flex-col items-center flex-1 px-1 cursor-pointer">
              <input 
               type="date" 
               value={dateStr}
               onChange={(e) => setDateStr(e.target.value)}
-              className="bg-transparent text-slate-800 font-black text-2xl outline-none text-center tracking-tighter w-full"
+              className="bg-transparent text-slate-800 font-extrabold text-sm outline-none text-center tracking-tighter w-full py-0"
             />
-            <div className="flex items-center gap-1.5 mt-0.5">
-              <div className="w-1.5 h-1.5 rounded-full bg-amber-500"></div>
-              <span className="text-sm font-black text-slate-500 uppercase tracking-widest">{data.weekDay}</span>
+            <div className="flex items-center gap-1 mt-0">
+              <div className="w-1 h-1 rounded-full bg-amber-500"></div>
+              <span className="text-[8px] font-black text-slate-500 uppercase tracking-widest">{data.weekDay}</span>
             </div>
           </div>
-          <button onClick={() => handleDayNav(1)} className="p-2 text-amber-600 hover:bg-amber-50 rounded-xl transition-all active:scale-90"><ChevronRight className="w-5 h-5" /></button>
+          <button onClick={() => handleDayNav(1)} className="p-1 text-amber-600 hover:bg-amber-50 rounded-md transition-all active:scale-90"><ChevronRight className="w-3 h-3" /></button>
         </div>
       </section>
 
-      <div className="px-3 mt-4 space-y-3.5 max-w-5xl mx-auto w-full">
+      <div className="px-1.5 mt-1.5 space-y-1.5 max-w-5xl mx-auto w-full focus-mode-compact-container">
         {/* Main Info Card */}
         <motion.section 
           initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}
-          className="bg-white rounded-[2rem] border border-slate-200 p-5 relative overflow-hidden shadow-sm"
+          className="bg-white rounded-xl border border-slate-200 p-2 relative overflow-hidden shadow-sm"
         >
-          <div className="absolute top-0 right-0 p-3">
-             <span className={`px-2.5 py-1 rounded-full text-xs font-black uppercase tracking-widest ${data.tianShenType === 'Hoàng Đạo' ? 'bg-amber-500 text-white' : 'bg-slate-200 text-slate-600'}`}>
+          <div className="absolute top-0 right-0 p-1.5">
+             <span className={`px-1.5 py-0.5 rounded-full text-[8px] font-black uppercase tracking-widest ${data.tianShenType === 'Hoàng Đạo' ? 'bg-amber-500 text-white' : 'bg-slate-200 text-slate-600'}`}>
                 {data.tianShen} {data.tianShenType}
              </span>
           </div>
 
-          <div className="flex items-start gap-5 mb-5 mt-2">
-             <div className="text-center">
-                <div className="text-[80px] font-black text-slate-800 leading-none tracking-tighter">{data.lunarObj.getDay()}</div>
-                <div className="text-sm font-black text-amber-600 uppercase tracking-widest mt-2">Tháng {data.lunarObj.getMonth()}</div>
-             </div>
-             <div className="h-20 w-px bg-slate-200 self-center" />
-             <div className="flex-1 pt-2">
-                <div className="text-xs font-black text-slate-500 uppercase tracking-widest mb-2 flex items-center gap-2">
+          <div className="flex items-center gap-3 mb-2 mt-0">
+              <div className="text-center min-w-[60px]">
+                <div className="text-[36px] md:text-[45px] font-black text-slate-800 leading-none tracking-tighter">{data.lunarObj.getDay()}</div>
+                <div className="text-[8px] md:text-10px font-black text-amber-600 uppercase tracking-widest mt-0">Tháng {data.lunarObj.getMonth()}</div>
+              </div>
+             <div className="h-10 w-px bg-slate-100 self-center" />
+             <div className="flex-1">
+                <div className="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-0.5 flex items-center gap-1.5 mt-1">
                    DL: {data.solarStrRaw}
                 </div>
-                <div className="flex items-center flex-wrap gap-x-3 gap-y-2 mb-3">
+                <div className="flex items-center flex-wrap gap-x-2 gap-y-0.5 mb-1 focus-mode-compact-bazi">
                    <div className="flex flex-col">
-                       <span className="text-[8px] sm:text-[9px] text-slate-400 font-bold tracking-widest uppercase mb-0.5">Ngày</span>
-                       <span className="text-[13px] sm:text-[15px] font-black text-slate-800 tracking-tight uppercase leading-none">{data.canChiDay}</span>
+                       <span className="text-[7px] text-slate-400 font-bold uppercase">Ngày</span>
+                       <span className="text-[11px] font-black text-slate-800 uppercase leading-none">{data.canChiDay}</span>
                    </div>
-                   <div className="w-px h-5 sm:h-6 bg-slate-200"></div>
+                   <div className="w-px h-3 bg-slate-100 mx-1"></div>
                    <div className="flex flex-col">
-                       <span className="text-[8px] sm:text-[9px] text-slate-400 font-bold tracking-widest uppercase mb-0.5">Tháng</span>
-                       <span className="text-[13px] sm:text-[15px] font-black text-slate-800 tracking-tight uppercase leading-none">{data.canChiMonth}</span>
+                       <span className="text-[7px] text-slate-400 font-bold uppercase">Tháng</span>
+                       <span className="text-[11px] font-black text-slate-800 uppercase leading-none">{data.canChiMonth}</span>
                    </div>
-                   <div className="w-px h-5 sm:h-6 bg-slate-200"></div>
+                   <div className="w-px h-3 bg-slate-100 mx-1"></div>
                    <div className="flex flex-col">
-                       <span className="text-[8px] sm:text-[9px] text-slate-400 font-bold tracking-widest uppercase mb-0.5">Năm</span>
-                       <span className="text-[13px] sm:text-[15px] font-black text-slate-800 tracking-tight uppercase leading-none">{data.canChiYear}</span>
+                       <span className="text-[7px] text-slate-400 font-bold uppercase">Năm</span>
+                       <span className="text-[11px] font-black text-slate-800 uppercase leading-none">{data.canChiYear}</span>
                    </div>
                 </div>
-                <div className="flex flex-wrap gap-2">
-                   <span className="text-xs font-bold text-amber-700 bg-amber-100 border-amber-200 px-2 py-1 rounded-lg border uppercase tracking-widest">{data.tietKhi}</span>
-                   <span className="text-xs font-bold text-emerald-700 bg-emerald-100 rounded-lg px-2 py-1 border border-emerald-200 uppercase tracking-widest">Tiến Thần</span>
+                <div className="flex flex-wrap gap-1">
+                   <span className="text-[8px] font-bold text-amber-700 bg-amber-50 border-amber-100 px-1 py-0.5 rounded border uppercase tracking-wider">{data.tietKhi}</span>
                 </div>
              </div>
           </div>
 
-          <div className="grid grid-cols-3 gap-3 pt-4 border-t border-slate-200/60">
+          <div className="grid grid-cols-3 gap-1 pt-2 border-t border-slate-100">
              {[
                { label: 'Trực', val: data.trucName, color: 'text-blue-600', tooltip: TERMS_EXPLAIN['Trực'] },
                { label: 'Nhị Bát Tú', val: XIU_MAP[data.lunarObj.getXiu()]?.name || 'N/A', color: 'text-emerald-600', tooltip: TERMS_EXPLAIN['Nhị Bát Tú'] },
                { label: 'Lục Nhâm', val: translateLiuYao(data.lunarObj.getLiuYao()), color: 'text-rose-600', tooltip: TERMS_EXPLAIN['Lục Nhâm'] }
              ].map((item, i) => (
                 <div key={i} className="text-center">
-                   <div className="text-xs font-black text-slate-500 uppercase tracking-widest mb-1 flex items-center justify-center">
+                   <div className="text-[8px] font-black text-slate-500 uppercase tracking-widest mb-0.5 flex items-center justify-center">
                      {item.label} <Explainer title={item.label} content={item.tooltip || ''} />
                    </div>
-                   <p className={`text-xs font-black ${item.color}`}>{item.val}</p>
+                   <p className={`text-[9px] font-black ${item.color}`}>{item.val}</p>
                 </div>
              ))}
           </div>
 
+
           {/* Tam Nguyên Cửu Vận */}
-          <div className="flex gap-2.5 pt-4 border-t border-slate-200/60 mt-4">
+          <div className="flex gap-2 pt-3 border-t border-slate-200/60 mt-3">
              {[
                { t: 'Năm', s: data.yStar }, { t: 'Tháng', s: data.mStar }, { t: 'Ngày', s: data.dStar }
              ].map((item, i) => (
-                <div key={i} className={`flex-1 p-2.5 rounded-[1.25rem] border ${item.s.color} text-center flex flex-col justify-center`}>
-                   <p className="text-xs font-black uppercase tracking-widest opacity-60 mb-0.5">{item.t}</p>
-                   <div className="text-xs font-black truncate">{item.s.name}</div>
-                   <div className="text-xs font-bold uppercase mt-0.5 opacity-50">{item.s.quality}</div>
+                <div key={i} className={`flex-1 p-2 rounded-xl border ${item.s.color} text-center flex flex-col justify-center`}>
+                   <p className="text-[8px] font-black uppercase tracking-widest opacity-60 mb-0.5">{item.t}</p>
+                   <div className="text-[9px] font-black truncate">{item.s.name}</div>
                 </div>
              ))}
           </div>
         </motion.section>
 
         {/* Directions & Warnings */}
-        <section className="grid grid-cols-2 gap-3.5">
-           <div className="bg-white p-3.5 rounded-[1.5rem] border border-slate-200 shadow-sm">
-              <h3 className="text-xs font-black text-slate-500 uppercase tracking-widest mb-3 flex items-center gap-1.5 text-center justify-center">
-                 PHƯƠNG VỊ CÁT THẦN <Explainer title="Phương Vị" content="Hỷ Thần là hướng may mắn, Tài Thần là hướng cầu tài lộc, Hạc Thần là hướng an lành, hộ mệnh." />
+        <section className="grid grid-cols-2 gap-1.5">
+           <div className="bg-white p-2 rounded-xl border border-slate-200 shadow-sm">
+              <h3 className="text-[9px] font-black text-slate-500 uppercase tracking-widest mb-1.5 flex items-center gap-1 text-center justify-center">
+                 CÁT THẦN
               </h3>
-              <div className="space-y-2">
+              <div className="space-y-1">
                  {[
                    { l: 'Hỷ Thần', v: data.directions.xi, c: 'text-pink-500', i: Heart },
                    { l: 'Tài Thần', v: data.directions.cai, c: 'text-amber-600', i: Activity },
                    { l: 'Hạc Thần', v: data.directions.he, c: 'text-slate-500', i: ShieldAlert }
                  ].map((d, i) => (
                    <div key={i} className="flex items-center justify-between">
-                      <div className="flex items-center gap-1.5">
-                         <d.i size={10} className={d.c} />
-                         <span className="text-xs font-black text-slate-500 uppercase">{d.l}</span>
+                      <div className="flex items-center gap-1">
+                         <d.i size={8} className={d.c} />
+                         <span className="text-[8px] font-black text-slate-500 uppercase">{d.l}</span>
                       </div>
-                      <span className={`text-xs font-black ${d.c}`}>{d.v}</span>
+                      <span className={`text-[9px] font-black ${d.c}`}>{d.v}</span>
                    </div>
                  ))}
               </div>
            </div>
 
-           <div className="bg-white p-3.5 rounded-[1.5rem] border border-slate-200 shadow-sm flex flex-col justify-between">
+           <div className="bg-white p-2 rounded-xl border border-slate-200 shadow-sm flex flex-col justify-between">
               <div>
-                 <h3 className="text-xs font-black text-rose-600 uppercase tracking-widest mb-2 flex items-center gap-1.5 justify-center">
-                    TUỔI XUNG KHẮC
+                 <h3 className="text-[9px] font-black text-rose-600 uppercase tracking-widest mb-1 flex items-center gap-1 justify-center">
+                    TUỔI XUNG
                  </h3>
-                 <div className="text-center py-1">
-                    <p className="text-xs font-black text-rose-500 tracking-tighter">{data.conflictAges}</p>
-                    <p className="text-xs font-black text-slate-500 uppercase mt-0.5">Xung trong ngày</p>
+                 <div className="text-center">
+                    <p className="text-[10px] font-black text-rose-500 tracking-tighter">{data.conflictAges}</p>
                  </div>
               </div>
-              <div className="pt-2 border-t border-slate-100">
-                 <p className="text-xs font-black text-emerald-500 uppercase tracking-widest mb-1">NÊN LÀM</p>
-                 <p className="text-xs font-medium text-slate-500 leading-tight line-clamp-2 italic">{data.yiAdvice || 'N/A'}</p>
+              <div className="pt-1 border-t border-slate-50">
+                 <p className="text-[8px] font-black text-emerald-500 uppercase tracking-widest mb-0">NÊN:</p>
+                 <p className="text-[9px] font-medium text-slate-500 leading-tight line-clamp-1 italic">{data.yiAdvice || 'N/A'}</p>
               </div>
            </div>
         </section>
 
+
         {/* Stars Detail */}
-        <section className="bg-white p-4 rounded-[1.5rem] border border-slate-200 shadow-sm">
-           <div className="grid grid-cols-2 gap-4">
+        <section className="bg-white p-3 rounded-xl border border-slate-200 shadow-sm">
+           <div className="grid grid-cols-2 gap-3 focus-mode-compact-stars">
               <div>
-                 <h3 className="text-xs font-black text-emerald-600 uppercase tracking-widest mb-3 flex items-center gap-1.5">
-                    <CheckCircle2 size={12} /> SAO TỐT
+                 <h3 className="text-[9px] font-black text-emerald-600 uppercase tracking-widest mb-2 flex items-center gap-1.5 justify-center">
+                    <CheckCircle2 size={10} /> SAO TỐT
                  </h3>
-                 <div className="space-y-2">
+                 <div className="space-y-1.5 text-center">
                     {data.luckyStarsList.slice(0, 3).map((s: any, i: number) => (
                        <div key={i}>
-                          <div className="text-xs font-black text-emerald-600">{s.name}</div>
-                          <div className="text-xs text-slate-500 italic leading-tight">{s.desc}</div>
+                          <div className="text-[10px] font-black text-emerald-600 leading-none">{s.name}</div>
+                          <div className="text-[8px] text-slate-500 italic leading-tight">{s.desc}</div>
                        </div>
                     ))}
                  </div>
               </div>
               <div>
-                 <h3 className="text-xs font-black text-rose-500 uppercase tracking-widest mb-3 flex items-center gap-1.5">
-                    <UserX size={12} /> SAO XẤU
+                 <h3 className="text-[9px] font-black text-rose-500 uppercase tracking-widest mb-2 flex items-center gap-1.5 justify-center">
+                    <UserX size={10} /> SAO XẤU
                  </h3>
-                 <div className="space-y-2">
+                 <div className="space-y-1.5 text-center">
                     {data.badStarsList.slice(0, 3).map((s: any, i: number) => (
                        <div key={i}>
-                          <div className="text-xs font-black text-rose-600">{s.name}</div>
-                          <div className="text-xs text-slate-500 italic leading-tight">{s.desc}</div>
+                          <div className="text-[10px] font-black text-rose-600 leading-none">{s.name}</div>
+                          <div className="text-[8px] text-slate-500 italic leading-tight">{s.desc}</div>
                        </div>
                     ))}
                  </div>
@@ -769,70 +766,49 @@ ${info}`;
         </section>
 
         {/* Reading List: Luận Giải Chi Tiết */}
-        <section className="bg-amber-50/50 p-4 rounded-[1.5rem] border border-amber-200 shadow-sm mt-4 text-slate-800">
-           <h2 className="text-sm font-black text-amber-800 uppercase tracking-widest mb-4 flex items-center justify-center border-b border-amber-200/50 pb-3"> LUẬN GIẢI CHI TIẾT </h2>
+        <section className="bg-amber-50/40 p-2.5 rounded-xl border border-amber-200/60 shadow-sm mt-1 focus-mode-compact-reading">
+           <h2 className="text-[10px] font-black text-amber-800 uppercase tracking-widest mb-2 flex items-center justify-center border-b border-amber-200/30 pb-1.5"> LUẬN GIẢI CHI TIẾT </h2>
            
-           <div className="space-y-4">
+           <div className="space-y-2">
               {/* Sao tốt xấu */}
               <div>
-                 <h3 className="text-xs font-black text-amber-900 mb-1">Sao tốt:</h3>
-                 <p className="text-xs font-medium text-slate-700 leading-relaxed pl-2 border-l-2 border-emerald-400">
+                 <h3 className="text-[10px] font-black text-amber-900 mb-0.5">Cát - Hung tinh:</h3>
+                 <p className="text-[10px] font-medium text-slate-700 leading-relaxed pl-2 border-l-2 border-amber-400">
                    {data.luckyStarsList.length > 0 ? (
-                     data.luckyStarsList.map((s: any) => <span key={s.name}><strong className="text-emerald-700">{s.name}:</strong> {s.desc}. </span>)
-                   ) : 'Không có sao tốt.'}
-                 </p>
-                 
-                 <h3 className="text-xs font-black text-amber-900 mb-1 mt-3">Sao xấu:</h3>
-                 <p className="text-xs font-medium text-slate-700 leading-relaxed pl-2 border-l-2 border-rose-400">
+                     data.luckyStarsList.map((s: any) => <span key={s.name}><strong className="text-emerald-700">{s.name}</strong>, </span>)
+                   ) : ''}
                    {data.badStarsList.length > 0 ? (
-                     data.badStarsList.map((s: any) => <span key={s.name}><strong className="text-rose-700">{s.name}:</strong> {s.desc}. </span>)
-                   ) : 'Không có sao xấu.'}
+                     data.badStarsList.map((s: any) => <span key={s.name}><strong className="text-rose-700">{s.name}</strong>, </span>)
+                   ) : ''}
                  </p>
               </div>
 
-              {/* Giờ xuất hành (LT P) */}
-              <div>
-                 <h3 className="text-xs font-black text-amber-900 mb-1 mt-3">Giờ xuất hành:</h3>
-                 <div className="text-xs font-medium text-slate-700 leading-relaxed pl-2 space-y-0.5">
-                   {data.lyThuanPhong.map(l => (
-                     <p key={l.name}><strong className="text-amber-700">- Giờ {l.name}:</strong> {l.timesDesc}</p>
-                   ))}
+              <div className="grid grid-cols-2 gap-2 border-t border-amber-200/30 pt-2">
+                <div>
+                   <h3 className="text-[9px] font-black text-amber-900 mb-0.5 uppercase">Trực {data.trucName}</h3>
+                   <p className="text-[9px] text-slate-600 leading-tight line-clamp-2 italic">
+                     {TRUC_MAP[data.lunarObj.getDayZhi()]?.desc || 'Luận giải trực...'}
+                   </p>
+                </div>
+                <div>
+                   <h3 className="text-[9px] font-black text-amber-900 mb-0.5 uppercase">Sao {data.xiuDetails.name}</h3>
+                   <p className="text-[9px] text-slate-600 leading-tight line-clamp-2 italic">
+                     {data.xiuDetails.msg || 'Luận giải tú...'}
+                   </p>
+                </div>
+              </div>
+
+              <div className="border-t border-amber-200/30 pt-2">
+                 <h3 className="text-[9px] font-black text-amber-900 mb-0.5">GIỜ XUẤT HÀNH (LÝ THUẦN PHONG):</h3>
+                 <div className="text-[9px] font-medium text-slate-700 leading-relaxed pl-2 space-y-0.5">
+                   <p><strong>Đại An:</strong> Mọi việc tốt lành. Cầu tài hướng Tây Nam.</p>
+                   <p><strong>Lưu Niên:</strong> Sự nghiệp khó thành. Kiện cáo nên hoãn.</p>
+                   <p><strong>Tốc Hỷ:</strong> Tin vui sắp tới. Sắp có tài lộc lợi ích.</p>
+                   <p><strong>Xích Khẩu:</strong> Dễ cãi cọ, thị phi. Giữ mồm miệng.</p>
+                   <p><strong>Tiểu Cát:</strong> Rất tốt lành. Có tài lợi, bệnh tật tiêu tan.</p>
+                   <p><strong>Không Vong:</strong> Khó nên việc lớn, hao tài, dễ mất cắp.</p>
                  </div>
               </div>
-
-              <div className="border-t border-amber-200/60 pt-3">
-                 <h3 className="text-xs font-black text-amber-900 mb-1">Ngày đại kỵ:</h3>
-                 <p className="text-xs font-medium text-slate-700 leading-relaxed pl-2">
-                   {data.conflictAges ? `Ngày này cần tránh tuổi: ${data.conflictAges}` : 'Ngày không phạm đại kỵ tuổi.'}
-                 </p>
-              </div>
-
-              <div className="border-t border-amber-200/60 pt-3">
-                 <h3 className="text-xs font-black text-amber-900 mb-1">Thập Nhị Bát Tú - Sao {data.xiuDetails.name}:</h3>
-                 <p className="text-xs font-medium text-slate-700 leading-relaxed pl-2">
-                   <strong>Luận giải:</strong> {data.xiuDetails.msg}
-                 </p>
-              </div>
-
-              <div className="border-t border-amber-200/60 pt-3">
-                 <h3 className="text-xs font-black text-amber-900 mb-1">Thập Nhị Kiến Trừ - Trực {data.trucName}:</h3>
-                 <p className="text-xs font-medium text-slate-700 leading-relaxed pl-2">
-                   <strong>Luận giải:</strong> {TRUC_MAP[data.lunarObj.getDayZhi()]?.desc || TRUC_MAP[typeof data.lunarObj.getZhiXing === 'function' ? data.lunarObj.getZhiXing() : '']?.desc || `Nên chú ý các việc liên quan đến trực ${data.trucName}.`}
-                 </p>
-              </div>
-
-              <div className="border-t border-amber-200/60 pt-3">
-                 <h3 className="text-xs font-black text-amber-900 mb-1">Giờ xuất hành (Lý Thuần Phong):</h3>
-                 <div className="text-[11px] font-medium text-slate-700 leading-relaxed pl-2 space-y-1">
-                   <p><strong>Giờ Đại An ({data.lyThuanPhong.find(l => l.name==='Đại An')?.timesDesc.replace(/;/g, ',')}):</strong> Mọi việc đa phần tốt lành. Người cầu tài đi hướng Tây Nam, xuất hành bình yên, gia đạo yên bình.</p>
-                   <p><strong>Giờ Lưu Niên ({data.lyThuanPhong.find(l => l.name==='Lưu Niên')?.timesDesc.replace(/;/g, ',')}):</strong> Sự nghiệp khó thành, mọi việc trắc trở mờ mịt. Kiện cáo nên hoãn. Đi hướng Nam tìm kẻ mất cắp.</p>
-                   <p><strong>Giờ Tốc Hỷ ({data.lyThuanPhong.find(l => l.name==='Tốc Hỷ')?.timesDesc.replace(/;/g, ',')}):</strong> Tin vui sắp tới. Sắp có tài lộc lợi ích, chăn nuôi gặp thuận lợi, đi xa gặp gỡ quan lộ may mắn.</p>
-                   <p><strong>Giờ Xích Khẩu ({data.lyThuanPhong.find(l => l.name==='Xích Khẩu')?.timesDesc.replace(/;/g, ',')}):</strong> Dễ cáu gắt khẩu chiến, hay cãi cọ, dễ dính thị phi. Tốt nhất giữ mồm miệng, không nên làm việc lớn.</p>
-                   <p><strong>Giờ Tiểu Cát ({data.lyThuanPhong.find(l => l.name==='Tiểu Cát')?.timesDesc.replace(/;/g, ',')}):</strong> Rất tốt lành. Có tiểu lợi, mọi việc thuận lợi. Có tin mừng, bệnh tật tiêu tan, gặp nhiều may mắn.</p>
-                   <p><strong>Giờ Không Vong ({data.lyThuanPhong.find(l => l.name==='Không Vong')?.timesDesc.replace(/;/g, ',')}):</strong> Khó nên việc lớn, hao tài, tiến thoái lưỡng nan. Bệnh tật, mất cắp dễ xảy ra.</p>
-                 </div>
-              </div>
-
            </div>
         </section>
 
@@ -1061,6 +1037,11 @@ ${info}`;
           <div className="p-3 bg-[#fffbf0]/40 border-t border-amber-200/40 space-y-3">
             <div className="relative group">
               <textarea
+                onFocus={(e) => {
+                  setTimeout(() => {
+                    e.target.scrollIntoView({ behavior: "smooth", block: "center" });
+                  }, 300);
+                }}
                 disabled={isAnalyzing}
                 value={
                   xemNgayQuestion +
