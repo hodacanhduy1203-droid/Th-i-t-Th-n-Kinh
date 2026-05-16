@@ -541,6 +541,7 @@ ${info}`;
       hours, directions, luckyStarsList, badStarsList, yiAdvice, jiAdvice,
       conflictAges, trucName,
       lyThuanPhong, xiuDetails,
+      pengZuGan: translateText(lunar.getPengZuGan()), pengZuZhi: translateText(lunar.getPengZuZhi()),
       lunarObj: lunar, solarObj: solar,
       // For AI Analysis
       lunar: lunar,
@@ -766,89 +767,121 @@ ${info}`;
         </section>
 
         {/* Reading List: Luận Giải Chi Tiết */}
-        <section className="bg-amber-50/40 p-3 rounded-xl border border-amber-200/60 shadow-sm mt-1 focus-mode-compact-reading">
-           <h2 className="text-[12px] font-black text-amber-800 uppercase tracking-widest mb-3 flex items-center justify-center border-b border-amber-200/30 pb-2"> LUẬN GIẢI CHI TIẾT </h2>
+        <section className="bg-[#FFFDF7] p-4 sm:p-5 rounded-[2rem] border border-amber-200/60 shadow-sm mt-3 relative overflow-hidden focus-mode-compact-reading">
+           <h2 className="text-[14px] sm:text-[16px] font-black text-amber-800 uppercase tracking-widest mb-4 flex items-center justify-center"> LUẬN GIẢI CHI TIẾT </h2>
            
            <div className="space-y-4">
-              {/* Sao tốt */}
-              {data.luckyStarsList.length > 0 && (
+              {/* Việc NÊN / KỴ */}
               <div>
-                 <h3 className="text-[11px] font-black text-amber-900 mb-1">Sao tốt:</h3>
-                 <p className="text-[11px] font-medium text-slate-700 leading-relaxed pl-2 border-l-2 border-emerald-400">
-                    {data.luckyStarsList.map((s: any, idx: number) => (
-                       <span key={s.name}>
-                          <strong className="text-emerald-700">{s.name}:</strong> {s.desc}{idx < data.luckyStarsList.length - 1 ? ' ' : ''}
-                       </span>
-                    ))}
+                 <h3 className="text-[12px] sm:text-[14px] font-black text-amber-900 mb-1.5">Việc Nên và Kỵ:</h3>
+                 <p className="text-[12px] sm:text-[13.5px] font-medium text-slate-700 leading-relaxed pl-3 border-l-2 border-emerald-400 mb-2">
+                   <strong className="text-emerald-700">Việc nên làm (Nghi):</strong> {data.yiAdvice || 'N/A'}. 
+                 </p>
+                 <p className="text-[12px] sm:text-[13.5px] font-medium text-slate-700 leading-relaxed pl-3 border-l-2 border-rose-400">
+                   <strong className="text-rose-700">Việc kiêng kỵ (Kỵ):</strong> {data.jiAdvice || 'N/A'}. 
                  </p>
               </div>
-              )}
+
+              <hr className="border-amber-200/50" />
+
+              {/* Sao tốt */}
+              <div>
+                 <h3 className="text-[12px] sm:text-[14px] font-black text-amber-900 mb-1.5">Sao tốt:</h3>
+                 <p className="text-[12px] sm:text-[13.5px] font-medium text-slate-700 leading-relaxed pl-3 border-l-2 border-emerald-400">
+                   {data.luckyStarsList.length > 0 ? (
+                     data.luckyStarsList.map((s: any) => <span key={s.name}><strong className="text-emerald-700">{s.name}</strong>: {s.desc}. </span>)
+                   ) : 'Không có sao tốt.'}
+                 </p>
+              </div>
 
               {/* Sao xấu */}
-              {data.badStarsList.length > 0 && (
               <div>
-                 <h3 className="text-[11px] font-black text-amber-900 mb-1">Sao xấu:</h3>
-                 <p className="text-[11px] font-medium text-slate-700 leading-relaxed pl-2 border-l-2 border-rose-400">
-                    {data.badStarsList.map((s: any, idx: number) => (
-                       <span key={s.name}>
-                          <strong className="text-rose-700">{s.name}:</strong> {s.desc}{idx < data.badStarsList.length - 1 ? ' ' : ''}
-                       </span>
-                    ))}
+                 <h3 className="text-[12px] sm:text-[14px] font-black text-amber-900 mb-1.5">Sao xấu:</h3>
+                 <p className="text-[12px] sm:text-[13.5px] font-medium text-slate-700 leading-relaxed pl-3 border-l-2 border-rose-400">
+                   {data.badStarsList.length > 0 ? (
+                     data.badStarsList.map((s: any) => <span key={s.name}><strong className="text-rose-700">{s.name}</strong>: {s.desc}. </span>)
+                   ) : 'Không có sao xấu.'}
                  </p>
               </div>
-              )}
 
-              {/* Giờ xuất hành */}
+              {/* Giờ xuất hành (ngắn) */}
               <div>
-                 <h3 className="text-[11px] font-black text-amber-900 mb-1">Giờ xuất hành:</h3>
-                 <div className="text-[11px] font-medium text-slate-700 leading-relaxed pl-2 space-y-0.5">
-                    {data.lyThuanPhong.map((ltp: any) => (
-                       <div key={ltp.name}>
-                          - <strong className="text-amber-800">Giờ {ltp.name}:</strong> {ltp.timesDesc}
-                       </div>
+                 <h3 className="text-[12px] sm:text-[14px] font-black text-amber-900 mb-1.5">Giờ xuất hành:</h3>
+                 <div className="text-[12px] sm:text-[13.5px] font-medium text-slate-700 leading-relaxed space-y-1.5">
+                    {data.lyThuanPhong.map((ltp) => (
+                      <div key={ltp.name}>
+                        - <strong className="text-amber-800">Giờ {ltp.name}</strong>: {ltp.timesDesc}
+                      </div>
                     ))}
                  </div>
               </div>
+
+              <hr className="border-amber-200/50" />
 
               {/* Ngày đại kỵ */}
-              {data.conflictAges && (
-                 <div className="border-t border-amber-200/30 pt-3">
-                    <h3 className="text-[11px] font-black text-amber-900 mb-1">Ngày đại kỵ:</h3>
-                    <p className="text-[11px] font-medium text-slate-700 leading-relaxed pl-2">
-                       Ngày này cần tránh tuổi: {data.conflictAges}
-                    </p>
-                 </div>
-              )}
-
-              {/* Thập Nhị Bát Tú */}
-              <div className="border-t border-amber-200/30 pt-3">
-                 <h3 className="text-[11px] font-black text-amber-900 mb-1">Thập Nhị Bát Tú - Sao {data.xiuDetails.name}:</h3>
-                 <p className="text-[11px] font-medium text-slate-700 leading-relaxed pl-2">
-                    <strong>Luận giải:</strong> {data.xiuDetails.msg}
+              <div>
+                 <h3 className="text-[12px] sm:text-[14px] font-black text-amber-900 mb-1.5">Ngày đại kỵ:</h3>
+                 <p className="text-[12px] sm:text-[13.5px] font-medium text-slate-700 pl-3">
+                   Ngày này cần tránh tuổi: {data.conflictAges}
                  </p>
               </div>
+
+              <hr className="border-amber-200/50" />
+
+              {/* Hướng Xuất Hành */}
+              <div>
+                 <h3 className="text-[12px] sm:text-[14px] font-black text-amber-900 mb-1.5">Hướng xuất hành:</h3>
+                 <p className="text-[12px] sm:text-[13.5px] font-medium text-slate-700 pl-3">
+                   Nên đi hướng <strong className="text-emerald-700">{data.directions.xi}</strong> để đón Hỷ Thần, hướng <strong className="text-emerald-700">{data.directions.cai}</strong> đón Tài Thần. Tránh hướng <strong className="text-rose-700">{data.directions.he}</strong> gặp Hạc Thần (Xấu).
+                 </p>
+              </div>
+
+              <hr className="border-amber-200/50" />
+
+              {/* Bành Tổ Bách Kỵ */}
+              <div>
+                 <h3 className="text-[12px] sm:text-[14px] font-black text-amber-900 mb-1.5">Bành Tổ Bách Kỵ:</h3>
+                 <div className="text-[12px] sm:text-[13.5px] font-medium text-slate-700 pl-3 space-y-1">
+                   <p><strong className="text-rose-700">Ngày {data.canChiDay.split(' ')[0]}:</strong> {data.pengZuGan || 'Không làm việc lớn để tránh tai ương'}.</p>
+                   <p><strong className="text-rose-700">Ngày {data.canChiDay.split(' ')[1]}:</strong> {data.pengZuZhi || 'Không làm việc lớn để tránh tai ương'}.</p>
+                 </div>
+              </div>
+
+              <hr className="border-amber-200/50" />
+
+              {/* Nhị Thập Bát Tú */}
+              <div>
+                 <h3 className="text-[12px] sm:text-[14px] font-black text-amber-900 mb-1.5">Nhị Thập Bát Tú - Sao {data.xiuDetails.name}:</h3>
+                 <p className="text-[12px] sm:text-[13.5px] font-medium text-slate-700 pl-3">
+                   <strong className="text-slate-800">Luận giải:</strong> {data.xiuDetails.msg}
+                 </p>
+              </div>
+
+              <hr className="border-amber-200/50" />
 
               {/* Thập Nhị Kiến Trừ */}
-              <div className="border-t border-amber-200/30 pt-3">
-                 <h3 className="text-[11px] font-black text-amber-900 mb-1">Thập Nhị Kiến Trừ - Trực {data.trucName}:</h3>
-                 <p className="text-[11px] font-medium text-slate-700 leading-relaxed pl-2">
-                    <strong>Luận giải:</strong> {data.truc.desc}
+              <div>
+                 <h3 className="text-[12px] sm:text-[14px] font-black text-amber-900 mb-1.5">Thập Nhị Kiến Trừ - Trực {data.trucName}:</h3>
+                 <p className="text-[12px] sm:text-[13.5px] font-medium text-slate-700 pl-3">
+                   <strong className="text-slate-800">Luận giải:</strong> {data.truc.desc}
                  </p>
               </div>
 
+              <hr className="border-amber-200/50" />
+
               {/* Giờ xuất hành chi tiết */}
-              <div className="border-t border-amber-200/30 pt-3">
-                 <h3 className="text-[11px] font-black text-amber-900 mb-1">Giờ xuất hành (Lý Thuần Phong):</h3>
-                 <div className="text-[11px] font-medium text-slate-700 leading-relaxed pl-2 space-y-1.5">
-                    {data.lyThuanPhong.map((ltp: any) => (
-                      <p key={ltp.name}>
-                        <strong className="text-amber-800">Giờ {ltp.name} ({ltp.timesDesc}):</strong> {
+              <div>
+                 <h3 className="text-[12px] sm:text-[14px] font-black text-amber-900 mb-2">Giờ xuất hành (Lý Thuần Phong):</h3>
+                 <div className="text-[12px] sm:text-[13.5px] font-medium text-slate-700 leading-relaxed space-y-2.5">
+                    {data.lyThuanPhong.map((ltp) => (
+                      <p key={`detail_${ltp.name}`}>
+                        <strong className="text-slate-800">Giờ {ltp.name} ({ltp.timesDesc}):</strong> {
                           ltp.name === 'Đại An' ? 'Mọi việc đa phần tốt lành. Người cầu tài đi hướng Tây Nam, xuất hành bình yên, gia đạo yên bình.' :
                           ltp.name === 'Lưu Niên' ? 'Sự nghiệp khó thành, mọi việc trắc trở mờ mịt. Kiện cáo nên hoãn. Đi hướng Nam tìm kẻ mất cắp.' :
                           ltp.name === 'Tốc Hỷ' ? 'Tin vui sắp tới. Sắp có tài lộc lợi ích, chăn nuôi gặp thuận lợi, đi xa gặp gỡ quan lộ may mắn.' :
                           ltp.name === 'Xích Khẩu' ? 'Dễ cáu gắt khẩu chiến, hay cãi cọ, dễ dính thị phi. Tốt nhất giữ mồm miệng, không nên làm việc lớn.' :
                           ltp.name === 'Tiểu Cát' ? 'Rất tốt lành. Có tiểu lợi, mọi việc thuận lợi. Có tin mừng, bệnh tật tiêu tan, gặp nhiều may mắn.' :
-                          ltp.name === 'Không Vong' ? 'Khó nên việc, hao tài, tiến thoái lưỡng nan. Bệnh tật, mất cắp dễ xảy ra.' : ''
+                          ltp.name === 'Không Vong' ? 'Khó nên việc lớn, hao tài, tiến thoái lưỡng nan. Bệnh tật, mất cắp dễ xảy ra.' : ''
                         }
                       </p>
                     ))}

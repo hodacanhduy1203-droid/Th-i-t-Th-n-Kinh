@@ -16,6 +16,7 @@ export const translations = {
     'tab.thai_to': 'Mạch thái tử dịch',
     'tab.thai_at': 'Thái Ất Thần Kinh',
     'tab.ky_mon': 'Kỳ Môn Độn Giáp',
+    'tab.pt_don_giap': 'PT Độn Giáp',
     
     // Tools
     'tool.calculate': 'Lấy lá số',
@@ -136,6 +137,7 @@ export const translations = {
     'tab.thai_to': 'Thai Tu Dich Pulse',
     'tab.thai_at': 'Tai Yi Shen Shu',
     'tab.ky_mon': 'Qi Men Dun Jia',
+    'tab.pt_don_giap': 'PT Don Giap',
 
     // Tools
     'tool.calculate': 'Generate Chart',

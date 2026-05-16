@@ -56,6 +56,7 @@ import { TuViTab } from "./components/TuViTab";
 import { XemNgayTab } from "./components/XemNgayTab";
 import { ThaiToTab } from "./components/ThaiToTab";
 import KyMonTab from "./components/KyMonTab";
+import PTDonGiapTab from "./components/PTDonGiapTab";
 import { ThaiAtApp } from "./components/ThaiAt/ThaiAtApp";
 import { AIChatAssistant } from "./components/AIChatAssistant";
 
@@ -1547,9 +1548,8 @@ function HexagramDisplay({
   }
 
   const wrapperClass = narrowWidth
-    ? `flex flex-col gap-0 mt-1 p-0.5 sm:p-1 md:p-1.5 lg:p-2 bg-white/50 border border-slate-200/80 rounded-xl shadow-sm h-full flex-shrink basis-0 w-full ${isChangedView ? "flex-[2] min-w-[90px] max-w-[110px] sm:max-w-[130px] md:max-w-[150px]" : "flex-[3] min-w-[150px] max-w-[180px] sm:max-w-[210px] md:max-w-[240px]"}`
-    : `flex flex-col gap-0 mt-1 p-0.5 sm:p-1 md:p-1.5 lg:p-2 bg-white/50 border border-slate-200/80 rounded-xl shadow-sm h-full flex-shrink basis-0 w-full ${isChangedView ? "flex-[2] max-w-[150px] sm:max-w-[180px] md:max-w-[200px] lg:max-w-[230px] min-w-[110px] sm:min-w-[135px]" : "flex-[3] max-w-[240px] sm:max-w-[280px] md:max-w-[320px] lg:max-w-[360px] min-w-[180px] sm:min-w-[220px]"}`;
-
+    ? `flex flex-col gap-0 mt-1 p-0.5 sm:p-1 md:p-1.5 lg:p-2 bg-[#F2F2EB] border border-gray-200 rounded-lg shadow-sm h-full flex-shrink basis-0 w-full ${isChangedView ? "flex-[2] min-w-[90px] max-w-[110px] sm:max-w-[130px] md:max-w-[150px]" : "flex-[3] min-w-[150px] max-w-[180px] sm:max-w-[210px] md:max-w-[240px]"}`
+    : `flex flex-col gap-0 mt-1 p-0.5 sm:p-1 md:p-1.5 lg:p-2 bg-[#F2F2EB] border border-gray-200 rounded-lg shadow-sm h-full flex-shrink basis-0 w-full ${isChangedView ? "flex-[2] max-w-[150px] sm:max-w-[180px] md:max-w-[200px] lg:max-w-[230px] min-w-[110px] sm:min-w-[135px]" : "flex-[3] max-w-[240px] sm:max-w-[280px] md:max-w-[320px] lg:max-w-[360px] min-w-[180px] sm:min-w-[220px]"}`;
 
   return (
     <div className={wrapperClass}>
@@ -3038,6 +3038,7 @@ export default function App() {
     | "thaiTo"
     | "thaiAt"
     | "kyMon"
+    | "ptDonGiap"
   >("lichBatQuai");
   const [selectedModel, setSelectedModel] = useState(() => {
     try {
@@ -4353,6 +4354,7 @@ Yêu cầu: Hãy viết một đoạn CHỈ 2 CÂU cực kỳ súc tích: Câu 1
             { id: "thaiTo", label: t("tab.thai_to") },
             { id: "thaiAt", label: t("tab.thai_at") },
             { id: "kyMon", label: t("tab.ky_mon") },
+            { id: "ptDonGiap", label: t("tab.pt_don_giap") },
           ].map((tab) => (
             <button
               key={tab.id}
@@ -4522,6 +4524,14 @@ Yêu cầu: Hãy viết một đoạn CHỈ 2 CÂU cực kỳ súc tích: Câu 1
       >
         {activeTab === "kyMon" && (
           <KyMonTab onRequireApiKey={() => setShowSettings(true)} />
+        )}
+      </main>
+
+      <main
+        className={`${activeTab === "ptDonGiap" ? "flex" : "hidden"} flex-1 p-1 md:p-2 flex-col items-center justify-start max-w-full mx-auto w-full bg-[#FDFBF7] text-slate-900 overflow-auto`}
+      >
+        {activeTab === "ptDonGiap" && (
+          <PTDonGiapTab />
         )}
       </main>
 
@@ -6176,37 +6186,37 @@ Yêu cầu: Hãy viết một đoạn CHỈ 2 CÂU cực kỳ súc tích: Câu 1
                 </div>
 
                 {/* Table Content */}
-                <div className="p-0 w-full border border-slate-200 rounded-lg shadow-sm bg-white overflow-hidden focus-mode-compact-bagua-table">
+                <div className="p-0 flex-1 w-full border border-amber-200/50 rounded-xl shadow-sm bg-[#faf9f5] overflow-hidden focus-mode-compact-bagua-table">
                   <table className="w-full text-left border-collapse table-fixed">
                     <thead>
-                      <tr className="bg-slate-50/80 border-b border-slate-200">
-                        <th className="py-1 px-0.5 font-black text-[9px] sm:text-[10px] uppercase tracking-tighter text-slate-500 text-center w-[10%] leading-none">
+                      <tr className="bg-gradient-to-b from-[#f2e9d8] to-[#eee2cb] border-b border-amber-200/60 shadow-sm">
+                        <th className="py-2 px-1 font-black text-[9px] sm:text-[10px] uppercase tracking-widest text-[#4a1d12] text-center w-[10%] leading-none border-r border-amber-100/50">
                           Trụ
                         </th>
-                        <th className="py-1 px-0.5 font-black text-[9px] sm:text-[10px] uppercase tracking-tighter text-slate-500 text-center w-[18%] leading-none">
+                        <th className="py-2 px-1 font-black text-[9px] sm:text-[10px] uppercase tracking-widest text-[#4a1d12] text-center w-[18%] leading-none border-r border-amber-100/50">
                           Dương
                         </th>
-                        <th className="py-1 px-0.5 font-black text-[9px] sm:text-[10px] uppercase tracking-tighter text-slate-500 text-center w-[6%] leading-none">
+                        <th className="py-2 px-1 font-black text-[9px] sm:text-[10px] uppercase tracking-widest text-[#4a1d12] text-center w-[6%] leading-none border-r border-amber-100/50">
                           Âm
                         </th>
-                        <th className="py-1 px-0.5 font-black text-[9px] sm:text-[10px] uppercase tracking-tighter text-slate-500 text-center w-[20%] leading-none">
+                        <th className="py-2 px-1 font-black text-[9px] sm:text-[10px] uppercase tracking-widest text-[#4a1d12] text-center w-[20%] leading-none border-r border-amber-100/50">
                           Can Chi
                         </th>
-                        <th className="py-1 px-0.5 font-black text-[9px] sm:text-[10px] uppercase tracking-tighter text-slate-500 text-center w-[8%] leading-none">
+                        <th className="py-2 px-1 font-black text-[9px] sm:text-[10px] uppercase tracking-widest text-[#4a1d12] text-center w-[8%] leading-none border-r border-amber-100/50">
                           Hóa
                         </th>
-                        <th className="py-1 px-0.5 font-black text-[9px] sm:text-[10px] uppercase tracking-tighter text-slate-500 text-center w-[12%] leading-none">
+                        <th className="py-2 px-1 font-black text-[9px] sm:text-[10px] uppercase tracking-widest text-[#4a1d12] text-center w-[12%] leading-none border-r border-amber-100/50">
                           Mệnh
                         </th>
-                        <th className="py-1 px-0.5 font-black text-[9px] sm:text-[10px] uppercase tracking-tighter text-slate-500 text-center w-[13%] leading-none">
+                        <th className="py-2 px-1 font-black text-[9px] sm:text-[10px] uppercase tracking-widest text-[#4a1d12] text-center w-[13%] leading-none border-r border-amber-100/50">
                           Phi
                         </th>
-                        <th className="py-1 px-0.5 font-black text-[9px] sm:text-[10px] uppercase tracking-tighter text-slate-500 text-center w-[13%] leading-none">
+                        <th className="py-2 px-1 font-black text-[9px] sm:text-[10px] uppercase tracking-widest text-[#4a1d12] text-center w-[13%] leading-none">
                           Sinh
                         </th>
                       </tr>
                     </thead>
-                    <tbody className="divide-y divide-slate-100">
+                    <tbody className="divide-y divide-amber-100/50 bg-white">
                       {["year", "month", "day", "hour"].map((type) => {
                         const label =
                           type === "year"
@@ -6260,12 +6270,12 @@ Yêu cầu: Hãy viết một đoạn CHỈ 2 CÂU cực kỳ súc tích: Câu 1
                         return (
                           <tr
                             key={type}
-                            className="hover:bg-slate-50/50 transition-colors group"
+                            className="hover:bg-[#fffdf8] transition-colors group"
                           >
-                            <td className="py-0.5 px-0.5 text-center font-bold text-[10px] sm:text-[12px]">
+                            <td className="py-2.5 px-1 text-center font-bold text-[10px] sm:text-[12px] border-r border-amber-50">
                               {label}
                             </td>
-                            <td className="py-0.5 px-0.5">
+                            <td className="py-2.5 px-1 border-r border-amber-50">
                               {type === "hour" ? (
                                 <div className="flex items-center gap-0 w-full justify-center">
                                   <input
@@ -6275,9 +6285,9 @@ Yêu cầu: Hãy viết một đoạn CHỈ 2 CÂU cực kỳ súc tích: Câu 1
                                     max="23"
                                     value={baguaDate.hour}
                                     onChange={handleBaguaInputChange}
-                                    className="w-[45%] bg-slate-50 border border-slate-200 rounded text-slate-700 text-[10px] sm:text-[12px] py-0 text-center px-0 flex-shrink-0"
+                                    className="w-[45%] bg-[#fffdf8] border border-amber-200/50 rounded-l text-[#4a1d12] text-[10px] sm:text-[12px] py-0.5 text-center px-0 flex-shrink-0 shadow-inner focus:outline-none focus:ring-1 focus:ring-amber-400"
                                   />
-                                  <span className="text-slate-400 text-[10px] mx-0.5">
+                                  <span className="text-amber-400 text-[10px] mx-0.5 font-bold">
                                     :
                                   </span>
                                   <input
@@ -6287,7 +6297,7 @@ Yêu cầu: Hãy viết một đoạn CHỈ 2 CÂU cực kỳ súc tích: Câu 1
                                     max="59"
                                     value={baguaDate.minute}
                                     onChange={handleBaguaInputChange}
-                                    className="w-[45%] bg-slate-50 border border-slate-200 rounded text-slate-700 text-[10px] sm:text-[12px] py-0 text-center px-0 flex-shrink-0"
+                                    className="w-[45%] bg-[#fffdf8] border border-amber-200/50 rounded-r text-[#4a1d12] text-[10px] sm:text-[12px] py-0.5 text-center px-0 flex-shrink-0 shadow-inner focus:outline-none focus:ring-1 focus:ring-amber-400"
                                   />
                                 </div>
                               ) : (
@@ -6296,19 +6306,19 @@ Yêu cầu: Hãy viết một đoạn CHỈ 2 CÂU cực kỳ súc tích: Câu 1
                                   name={type}
                                   value={baguaDate[type]}
                                   onChange={handleBaguaInputChange}
-                                  className="w-[90%] mx-auto block bg-slate-50 border border-slate-200 rounded text-slate-700 text-[10px] sm:text-[12px] py-0 text-center px-0"
+                                  className="w-[90%] mx-auto block bg-[#fffdf8] border border-amber-200/50 rounded text-[#4a1d12] text-[10px] sm:text-[12px] py-0.5 text-center px-0 shadow-inner focus:outline-none focus:ring-1 focus:ring-amber-400"
                                 />
                               )}
                             </td>
-                            <td className="py-0.5 px-0.5 text-center text-[10px] sm:text-[12px] font-mono font-medium text-slate-500 tabular-nums">
+                            <td className="py-2.5 px-1 text-center text-[10px] sm:text-[13px] font-mono font-bold text-amber-900 tabular-nums border-r border-amber-50 bg-[#fffdf8]">
                               {lunarVal}
                             </td>
-                            <td className="py-0.5 px-0.5 text-center bg-amber-50/5">
-                              <div className="flex flex-col items-center justify-center -space-y-0.5 sm:space-y-0 text-[10px] sm:text-[12px]">
+                            <td className="py-2.5 px-1 text-center bg-amber-50/20 shadow-inner border-r border-amber-100/30">
+                              <div className="flex flex-col items-center justify-center -space-y-0.5 sm:space-y-0 text-[11px] sm:text-[13px] font-bold">
                                 {renderColoredCanChi(name)}
                               </div>
                             </td>
-                            <td className="py-0.5 px-0.5 text-center text-[9px] sm:text-[10px] text-indigo-500 font-bold tracking-tighter">
+                            <td className="py-2.5 px-1 text-center text-[9px] sm:text-[10px] text-blue-700 font-black tracking-widest border-r border-amber-50">
                               {type === "hour"
                                 ? "Lộc"
                                 : type === "day"
@@ -6317,13 +6327,13 @@ Yêu cầu: Hãy viết một đoạn CHỈ 2 CÂU cực kỳ súc tích: Câu 1
                                     ? "Khoa"
                                     : "Kỵ"}
                             </td>
-                            <td className="py-0.5 px-0.5 text-center text-[9px] sm:text-[11px] font-semibold text-slate-500 leading-[1.1] truncate">
+                            <td className="py-2.5 px-1 text-center text-[10px] sm:text-[12px] font-bold text-[#4a1d12] leading-[1.1] truncate border-r border-amber-50 bg-[#fffcf5]">
                               {mang}
                             </td>
-                            <td className="py-0.5 px-0.5 text-center text-[10px] sm:text-[12px] font-semibold text-blue-600 italic">
+                            <td className="py-2.5 px-1 text-center text-[10px] sm:text-[12px] font-bold text-indigo-700 italic border-r border-amber-50">
                               {phi}
                             </td>
-                            <td className="py-0.5 px-0.5 text-center text-[10px] sm:text-[12px] font-semibold text-emerald-600 italic">
+                            <td className="py-2.5 px-1 text-center text-[10px] sm:text-[12px] font-extrabold text-emerald-700 italic bg-[#f4fcf6]">
                               {sinh}
                             </td>
                           </tr>
@@ -6336,59 +6346,44 @@ Yêu cầu: Hãy viết một đoạn CHỈ 2 CÂU cực kỳ súc tích: Câu 1
             </div>
 
             {/* Right Panel: Trigram Result */}
-            <div className="w-full xl:flex-1 flex flex-col mt-4 xl:mt-0 xl:ml-2 min-w-0">
-              <div className="bg-[#F2F2EB] rounded-2xl shadow-sm border border-slate-200/60 p-4">
-                <div className="flex items-center gap-3 mb-6">
-                  <div className="w-1.5 h-6 bg-amber-500 rounded-full"></div>
-                  <h2 className="font-serif text-[18px] font-extrabold text-[#334155] uppercase tracking-wide">
-                    BẢN QUẺ LẬP
-                  </h2>
-                </div>
+            <div className="w-full xl:flex-1 bg-[#F5F2EB] border border-[#EBE5D9] rounded-2xl shadow-sm flex flex-col mt-1.5 xl:mt-0 xl:ml-2 min-w-0">
+              <div className="py-4 px-4 flex items-center justify-start gap-3">
+                <div className="w-[6px] h-[22px] bg-orange-500 rounded-sm shrink-0"></div>
+                <h2 className="font-serif text-[18px] sm:text-[22px] font-extrabold text-slate-800 uppercase tracking-widest leading-none drop-shadow-sm">
+                  Bản Quẻ Lập
+                </h2>
+              </div>
 
-                <div className="flex flex-col items-center">
-                  <div className="w-full flex flex-col gap-4">
+              <div className="p-2 lg:p-3 flex flex-col items-center">
+                <div className="w-full flex flex-col gap-4">
                   {/* Four Pillars */}
-                  <div className="grid grid-cols-4 divide-x divide-slate-200/60 bg-white border border-slate-200/80 rounded-xl w-full shadow-sm mt-2">
-                    <div className="flex flex-col items-center py-3 px-1 hover:bg-slate-50 transition-colors">
-                      <div className="text-[10px] md:text-[11px] text-slate-400 font-medium uppercase tracking-widest mb-1">
-                        NĂM
+                  <div className="flex flex-row-reverse justify-center gap-1.5 sm:gap-3 w-full mb-2">
+                    {[
+                      { label: "Năm", value: baguaLunarInfo?.lunarYearName },
+                      { label: "Tháng", value: baguaLunarInfo?.lunarMonthName },
+                      { label: "Ngày", value: baguaLunarInfo?.lunarDayName },
+                      { label: "Giờ", value: baguaLunarInfo?.lunarHourName },
+                    ].map((pillar, idx) => (
+                      <div key={idx} className="flex flex-col items-center bg-white border border-amber-200/60 rounded-xl overflow-hidden shadow-sm flex-1 max-w-[120px] isolate relative">
+                        {pillar.label === "Giờ" && <div className="absolute inset-0 bg-blue-50/30 -z-10"></div>}
+                        <div className={`w-full py-1.5 flex items-center justify-center text-[9px] md:text-[11px] font-bold uppercase tracking-widest text-center ${pillar.label === 'Giờ' ? 'bg-amber-100/50 text-amber-800 border-b border-amber-200/50' : 'bg-slate-50 text-slate-500 border-b border-slate-100'}`}>
+                          {pillar.label}
+                        </div>
+                        <div className="py-3 px-1 md:py-4 flex flex-col items-center justify-center w-full">
+                          <div className="text-[12px] sm:text-[14px] md:text-[16px] font-black text-center font-serif leading-tight">
+                            {renderColoredCanChi(pillar.value?.split(" ")[0] + " " + pillar.value?.split(" ")[1]) || <span className="text-slate-300">--</span>}
+                          </div>
+                        </div>
                       </div>
-                      <div className="text-[12px] md:text-sm font-bold text-[#b45309] uppercase tracking-tight text-center">
-                        {baguaLunarInfo?.lunarYearName}
-                      </div>
-                    </div>
-                    <div className="flex flex-col items-center py-3 px-1 hover:bg-slate-50 transition-colors">
-                      <div className="text-[10px] md:text-[11px] text-slate-400 font-medium uppercase tracking-widest mb-1">
-                        THÁNG
-                      </div>
-                      <div className="text-[12px] md:text-sm font-bold text-[#b45309] uppercase tracking-tight text-center">
-                        {baguaLunarInfo?.lunarMonthName}
-                      </div>
-                    </div>
-                    <div className="flex flex-col items-center py-3 px-1 hover:bg-slate-50 transition-colors">
-                      <div className="text-[10px] md:text-[11px] text-slate-400 font-medium uppercase tracking-widest mb-1">
-                        NGÀY
-                      </div>
-                      <div className="text-[12px] md:text-sm font-bold text-[#b45309] uppercase tracking-tight text-center">
-                        {baguaLunarInfo?.lunarDayName}
-                      </div>
-                    </div>
-                    <div className="flex flex-col items-center py-3 px-1 bg-[#fffbeb] hover:bg-[#fef3c7] transition-colors rounded-r-xl">
-                      <div className="text-[10px] md:text-[11px] text-[#b45309]/70 font-medium uppercase tracking-widest mb-1">
-                        GIỜ (LẬP QUẺ)
-                      </div>
-                      <div className="text-[12px] md:text-sm font-bold text-[#92400e] uppercase tracking-tight text-center">
-                        {baguaLunarInfo?.lunarHourName}
-                      </div>
-                    </div>
+                    ))}
                   </div>
 
                   {/* 1. Lập Tiên Thiên - Âm Lịch */}
-                  <div className="w-full flex flex-col items-center pt-2">
-                    <div className="text-[10px] md:text-[12px] font-bold uppercase tracking-widest text-blue-600 mb-4 bg-blue-50 border border-blue-200 px-4 py-1.5 rounded-full shadow-sm text-center inline-block">
+                  <div className="w-full flex flex-col items-center pt-1">
+                    <div className="text-[10px] md:text-[13px] font-black uppercase tracking-widest text-[#1565C0] mb-3 bg-[#E3F2FD] border border-[#BBDEFB] px-5 py-2 rounded-full shadow-sm text-center">
                       Quẻ Lập Tiên Thiên - Âm Lịch (Tổng {baguaLunarInfo?.sum})
                     </div>
-                    <div className="flex flex-row justify-center items-stretch w-full max-w-full space-x-1 sm:space-x-2 md:space-x-3 px-1">
+                    <div className="grid grid-cols-2 gap-2 w-full justify-items-center">
                       <HexagramDisplay
                         upper={mainUpper}
                         lower={mainLower}
@@ -6400,7 +6395,7 @@ Yêu cầu: Hãy viết một đoạn CHỈ 2 CÂU cực kỳ súc tích: Câu 1
                       <HexagramDisplay
                         upper={changedUpper}
                         lower={changedLower}
-                        title="Quẻ Biến (Tương lai)"
+                        title="Quẻ Biến"
                         isChangedView={true}
                         palaceUpper={getPalaceInfo(mainUpper, mainLower).palace}
                         palaceLower={getPalaceInfo(mainUpper, mainLower).palace}
@@ -6414,12 +6409,11 @@ Yêu cầu: Hãy viết một đoạn CHỈ 2 CÂU cực kỳ súc tích: Câu 1
                   </div>
 
                   {/* 2. Biến Quẻ Theo Từng Trụ (Âm) */}
-                  <div className="w-full mt-4 flex flex-col items-center">
-                    <div className="text-[10px] font-bold uppercase tracking-widest text-slate-400 mb-4 text-center px-4 w-full">
-                      Biến Quẻ Theo Từng Trụ (Tính Từ Số Dư Chia 6 Của Năm,
-                      Tháng, Ngày, Giờ, Tổng Âm)
+                  <div className="w-full mt-2 pt-4 border-t border-[#EBE5D9] flex flex-col items-center">
+                    <div className="text-[9px] md:text-[11px] font-extrabold uppercase tracking-widest text-slate-400 mb-3 text-center px-4 leading-relaxed">
+                      Biến Quẻ Theo Từng Trụ (Tính từ số dư chia 6 của năm, tháng, ngày, giờ, tổng âm)
                     </div>
-                    <div className="flex flex-row justify-center items-stretch w-full max-w-full space-x-1 sm:space-x-2 md:space-x-3 px-1">
+                    <div className="grid grid-cols-2 gap-2 w-full justify-items-center">
                       <HexagramDisplay
                         upper={mainUpper}
                         lower={mainLower}
@@ -6435,7 +6429,7 @@ Yêu cầu: Hãy viết một đoạn CHỈ 2 CÂU cực kỳ súc tích: Câu 1
                       <HexagramDisplay
                         upper={secondChangedUpper}
                         lower={secondChangedLower}
-                        title="Quẻ Biến (Tứ Trụ)"
+                        title="Quẻ Biến"
                         isChangedView={true}
                         palaceUpper={getPalaceInfo(mainUpper, mainLower).palace}
                         palaceLower={getPalaceInfo(mainUpper, mainLower).palace}
@@ -6449,12 +6443,11 @@ Yêu cầu: Hãy viết một đoạn CHỈ 2 CÂU cực kỳ súc tích: Câu 1
                   </div>
 
                   {/* 3. Lập Tiên Thiên - Dương Lịch */}
-                  <div className="w-full mt-6 pt-4 border-t border-slate-200/50 flex flex-col items-center">
-                    <div className="text-[10px] md:text-[12px] font-bold uppercase tracking-widest text-rose-600 mb-4 bg-rose-50 border border-rose-200 px-4 py-1.5 rounded-full shadow-sm text-center inline-block">
-                      Quẻ Lập Tiên Thiên - Dương Lịch (Tổng{" "}
-                      {baguaLunarInfo?.solarSum})
+                  <div className="w-full mt-3 pt-4 border-t border-[#EBE5D9] flex flex-col items-center">
+                    <div className="text-[10px] md:text-[13px] font-black uppercase tracking-widest text-[#C62828] mb-3 bg-[#FFEBEE] border border-[#FFCDD2] px-5 py-2 rounded-full shadow-sm text-center">
+                      Quẻ Lập Tiên Thiên - Dương Lịch (Tổng {baguaLunarInfo?.solarSum})
                     </div>
-                    <div className="flex flex-row justify-center items-stretch w-full max-w-full space-x-1 sm:space-x-2 md:space-x-3 px-1">
+                    <div className="grid grid-cols-2 gap-2 w-full justify-items-center">
                       <HexagramDisplay
                         upper={solarMainUpper}
                         lower={solarMainLower}
@@ -6485,12 +6478,11 @@ Yêu cầu: Hãy viết một đoạn CHỈ 2 CÂU cực kỳ súc tích: Câu 1
                   </div>
 
                   {/* 4. Biến Quẻ Theo Từng Trụ Tiên Thiên (Dương) */}
-                  <div className="w-full mt-4 flex flex-col items-center">
-                    <div className="text-[10px] font-bold uppercase tracking-widest text-slate-400 mb-4 text-center px-4 w-full">
-                      Biến Quẻ Theo Từng Trụ Tiên Thiên (Số Dư Chia 6 Của Năm,
-                      Tháng, Ngày, Giờ, Phút, Tổng Dương)
+                  <div className="w-full mt-2 pt-4 border-t border-[#EBE5D9] flex flex-col items-center">
+                    <div className="text-[9px] md:text-[11px] font-extrabold uppercase tracking-widest text-slate-400 mb-3 text-center px-4 leading-relaxed">
+                      Biến Quẻ Theo Từng Trụ Tiên Thiên (Số dư chia 6 của năm, tháng, ngày, giờ, phút, tổng dương)
                     </div>
-                    <div className="flex flex-row justify-center items-stretch w-full max-w-full space-x-1 sm:space-x-2 md:space-x-3 px-1">
+                    <div className="grid grid-cols-2 gap-2 w-full justify-items-center">
                       <HexagramDisplay
                         upper={solarMainUpper}
                         lower={solarMainLower}
@@ -6506,7 +6498,7 @@ Yêu cầu: Hãy viết một đoạn CHỈ 2 CÂU cực kỳ súc tích: Câu 1
                       <HexagramDisplay
                         upper={solarSecondChangedUpper}
                         lower={solarSecondChangedLower}
-                        title="Quẻ Biến (Lục Trụ)"
+                        title="Quẻ Biến"
                         isChangedView={true}
                         palaceUpper={
                           getPalaceInfo(solarMainUpper, solarMainLower).palace
@@ -6593,7 +6585,6 @@ Yêu cầu: Hãy viết một đoạn CHỈ 2 CÂU cực kỳ súc tích: Câu 1
                     </div>
                   </div>
                 </div>
-              </div>
               </div>
             </div>
           </React.Fragment>
