@@ -465,134 +465,117 @@ ${cauTrucInstruction}
       <div className="w-full max-w-6xl flex flex-col gap-4 z-10 px-2 lg:px-0">
         <div className="bg-white p-3 md:p-4 rounded-xl shadow-md border border-slate-200/60 flex flex-col gap-3 transition-all">
           
-          <div className="flex flex-col xl:flex-row gap-3 xl:items-center">
-            <div className="flex items-center gap-2 pr-4 xl:border-r border-slate-100 shrink-0 self-start xl:self-center">
-               <div className="w-8 h-8 md:w-10 md:h-10 bg-gradient-to-br from-amber-100 to-amber-50 md:from-amber-100 rounded-full flex items-center justify-center shadow-inner border border-amber-200/50">
-                  <Calendar className="w-4 h-4 md:w-5 md:h-5 text-amber-600 drop-shadow-sm" />
+          <div className="flex flex-col gap-2 w-full">
+            <div className="flex flex-wrap items-center justify-between gap-2 px-1">
+               <div className="flex items-center gap-2">
+                  <div className="w-8 h-8 md:w-9 md:h-9 bg-gradient-to-br from-amber-100 to-amber-50 rounded-full flex items-center justify-center shadow-inner border border-amber-200/50">
+                     <Calendar className="w-4 h-4 md:w-4 md:h-4 text-amber-600 drop-shadow-sm" />
+                  </div>
+                  <h2 className="text-sm md:text-base font-black text-slate-800 uppercase tracking-widest font-serif whitespace-nowrap">Lấy Lá Số</h2>
                </div>
-               <h2 className="text-sm md:text-base font-black text-slate-800 uppercase tracking-widest font-serif whitespace-nowrap">Lấy Lá Số</h2>
+               
+               <div className="flex bg-slate-100 p-0.5 rounded-lg border border-slate-200">
+                  <button
+                      onClick={() => setActiveInput('solar')}
+                      className={`px-3 py-1 rounded-md text-[10px] font-bold transition-all uppercase ${activeInput === 'solar' ? "bg-white text-amber-600 shadow-sm" : "text-slate-500 hover:text-slate-700"}`}
+                  >
+                      DƯƠNG LỊCH
+                  </button>
+                  <button
+                      onClick={() => setActiveInput('lunar')}
+                      className={`px-3 py-1 rounded-md text-[10px] font-bold transition-all uppercase ${activeInput === 'lunar' ? "bg-white text-amber-600 shadow-sm" : "text-slate-500 hover:text-slate-700"}`}
+                  >
+                      ÂM LỊCH
+                  </button>
+               </div>
             </div>
 
-            <div className="flex-1 flex flex-col md:flex-row gap-2 w-full">
-               
-               {/* Sinh Thần Group */}
-               <div className="flex-[1.5] lg:flex-2 flex flex-col gap-1.5">
-                  <div className="grid grid-cols-4 gap-2 bg-slate-50 p-2 rounded-xl border border-slate-100/80 shadow-inner">
-                     {activeInput === 'solar' ? (
-                       <>
-                         <label className="flex flex-col gap-1 w-full relative group">
-                            <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest pl-1 text-center">NGÀY</span>
-                            <FastInput type="number" min="1" max="31" value={day} onChange={(e: any) => setDay(e.target.value)} className="w-full px-2 py-2 rounded-xl border border-slate-200/80 hover:border-slate-300 focus:border-amber-400 focus:outline-none focus:ring-1 focus:ring-amber-500 bg-white font-mono font-bold text-slate-800 text-center text-[16px] md:text-sm shadow-sm transition-all" />
-                         </label>
-                         <label className="flex flex-col gap-1 w-full relative group">
-                            <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest pl-1 text-center">THÁNG</span>
-                            <FastInput type="number" min="1" max="12" value={month} onChange={(e: any) => setMonth(e.target.value)} className="w-full px-2 py-2 rounded-xl border border-slate-200/80 hover:border-slate-300 focus:border-amber-400 focus:outline-none focus:ring-1 focus:ring-amber-500 bg-white font-mono font-bold text-slate-800 text-center text-[16px] md:text-sm shadow-sm transition-all" />
-                         </label>
-                         <label className="flex flex-col gap-1 w-full relative group">
-                            <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest pl-1 text-center">NĂM</span>
-                            <FastInput type="number" min="1900" max="2100" value={year} onChange={(e: any) => setYear(e.target.value)} className="w-full px-2 py-2 rounded-xl border border-slate-200/80 hover:border-slate-300 focus:border-amber-400 focus:outline-none focus:ring-1 focus:ring-amber-500 bg-white font-mono font-bold text-slate-800 text-center text-[16px] md:text-sm shadow-sm transition-all" />
-                         </label>
-                         <label className="flex flex-col gap-1 w-full relative group">
-                            <span className="text-[10px] font-bold text-amber-500/80 uppercase tracking-widest pl-1 text-center truncate">GIỜ</span>
-                            <FastInput type="number" min="0" max="23" value={hourStr} onChange={(e: any) => setHourStr(e.target.value)} className="w-full px-2 py-2 rounded-xl border border-amber-200/60 hover:border-amber-300 focus:border-amber-400 focus:outline-none focus:ring-1 focus:ring-amber-500 bg-amber-50/30 text-amber-800 font-mono font-bold text-center text-[16px] md:text-sm shadow-sm transition-all" />
-                         </label>
-                       </>
-                     ) : (
-                       <>
-                         <label className="flex flex-col gap-1 w-full relative group">
-                            <span className="text-[10px] font-bold text-slate-500/80 uppercase tracking-widest pl-1 text-center">NGÀY (AL)</span>
-                            <FastInput type="number" min="1" max="30" value={lDay} onChange={(e: any) => setLDay(e.target.value)} className="w-full px-2 py-2 rounded-xl border border-slate-200/80 hover:border-slate-300 focus:border-slate-400 focus:outline-none focus:ring-1 focus:ring-slate-400 bg-white font-mono font-bold text-slate-700 text-center text-[16px] md:text-sm shadow-sm transition-all" />
-                         </label>
-                         <label className="flex flex-col gap-1 w-full relative group">
-                            <div className="flex items-center justify-center gap-1">
-                              <span className="text-[10px] font-bold text-slate-500/80 uppercase tracking-widest whitespace-nowrap">THÁNG (AL)</span>
-                              <label className="flex items-center gap-0.5 cursor-pointer" title="Tháng nhuận?">
-                                <input type="checkbox" id="leap-check" checked={lIsLeap} onChange={e => setLIsLeap(e.target.checked)} className="w-3 h-3 accent-slate-500 cursor-pointer" />
-                              </label>
-                            </div>
-                            <FastInput type="number" min="1" max="12" value={lMonth} onChange={(e: any) => setLMonth(e.target.value)} className="w-full px-2 py-2 rounded-xl border border-slate-200/80 hover:border-slate-300 focus:border-slate-400 focus:outline-none focus:ring-1 focus:ring-slate-400 bg-white font-mono font-bold text-slate-700 text-center text-[16px] md:text-sm shadow-sm transition-all" />
-                         </label>
-                         <label className="flex flex-col gap-1 w-full relative group">
-                            <span className="text-[10px] font-bold text-slate-500/80 uppercase tracking-widest pl-1 text-center">NĂM (AL)</span>
-                            <FastInput type="number" min="1900" max="2100" value={lYear} onChange={(e: any) => setLYear(e.target.value)} className="w-full px-2 py-2 rounded-xl border border-slate-200/80 hover:border-slate-300 focus:border-slate-400 focus:outline-none focus:ring-1 focus:ring-slate-400 bg-white font-mono font-bold text-slate-700 text-center text-[16px] md:text-sm shadow-sm transition-all" />
-                         </label>
-                         <label className="flex flex-col gap-1 w-full relative group">
-                            <span className="text-[10px] font-bold text-slate-500/80 uppercase tracking-widest pl-1 text-center truncate">GIỜ</span>
-                            <FastInput type="number" min="0" max="23" value={hourStr} onChange={(e: any) => setHourStr(e.target.value)} className="w-full px-2 py-2 rounded-xl border border-slate-200/80 hover:border-slate-300 focus:border-slate-400 focus:outline-none focus:ring-1 focus:ring-slate-400 bg-white font-mono font-bold text-slate-700 text-center text-[16px] md:text-sm shadow-sm transition-all" />
-                         </label>
-                       </>
-                     )}
-                  </div>
-                  
-                  <div className="grid grid-cols-2 gap-2 mt-1">
-                     <label className="flex flex-col gap-1 w-full bg-slate-50 p-2 rounded-xl border border-slate-100/80 shadow-inner">
-                        <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest pl-1">GIỚI TÍNH</span>
-                        <select value={gender} onChange={e => setGender(e.target.value as any)} className="w-full px-2 py-2 rounded-xl border border-slate-200/80 hover:border-slate-300 focus:border-amber-400 focus:outline-none focus:ring-1 focus:ring-amber-500 bg-white font-bold text-slate-700 text-[16px] md:text-sm shadow-sm text-center transition-all">
-                           <option value="M">Nam</option>
-                           <option value="F">Nữ</option>
-                        </select>
-                     </label>
-                     <label className="flex flex-col gap-1 w-full relative bg-amber-50/40 p-2 rounded-xl border border-amber-200/60 shadow-inner">
-                        <span className="text-[10px] font-bold text-amber-600 uppercase tracking-widest pl-1">NĂM XEM</span>
-                        <input type="number" min="1900" max="2100" value={viewingYear} onChange={e => setViewingYear(e.target.value)} className="w-full px-2 py-2 rounded-xl border border-amber-300 hover:border-amber-400 focus:outline-none focus:ring-1 focus:ring-amber-500 bg-white font-bold text-amber-700 text-center text-[16px] md:text-sm shadow-sm transition-all" />
-                     </label>
-                  </div>
-               </div>
-
-               {/* Right side controls */}
-               <div className="flex-1 flex flex-col justify-end gap-2 w-full">
-                   <div className="flex flex-col gap-1.5 h-full">
-                      <div className="flex justify-between items-center mb-1">
-                          <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest pl-1">
-                              KIỂU NHẬP LỊCH
-                          </label>
-                          <div className="flex bg-slate-100/50 p-1 rounded-lg border border-slate-200/40">
-                              <button
-                                  onClick={() => setActiveInput('solar')}
-                                  className={`px-3 py-1 rounded-md text-[9px] font-bold transition-all uppercase ${activeInput === 'solar' ? "bg-[#F2F2EB] text-amber-600 shadow-sm" : "text-slate-400"}`}
-                              >
-                                  DƯƠNG LỊCH
-                              </button>
-                              <button
-                                  onClick={() => setActiveInput('lunar')}
-                                  className={`px-3 py-1 rounded-md text-[9px] font-bold transition-all uppercase ${activeInput === 'lunar' ? "bg-[#F2F2EB] text-amber-600 shadow-sm" : "text-slate-400"}`}
-                              >
-                                  ÂM LỊCH
-                              </button>
-                          </div>
+            <div className="grid grid-cols-4 md:grid-cols-8 gap-1.5 bg-slate-50 p-1.5 rounded-xl border border-slate-100/80 shadow-inner">
+               {activeInput === 'solar' ? (
+                 <>
+                   <label className="flex flex-col gap-1 w-full relative col-span-1 md:col-span-1">
+                      <span className="text-[9px] font-bold text-slate-400 uppercase tracking-widest text-center truncate">NGÀY</span>
+                      <FastInput type="number" min="1" max="31" value={day} onChange={(e: any) => setDay(e.target.value)} className="w-full px-1 py-1.5 rounded-lg border border-slate-200/80 focus:border-amber-400 focus:outline-none focus:ring-1 focus:ring-amber-500 bg-white font-mono font-bold text-slate-800 text-center text-[16px] md:text-sm shadow-sm" />
+                   </label>
+                   <label className="flex flex-col gap-1 w-full relative col-span-1 md:col-span-1">
+                      <span className="text-[9px] font-bold text-slate-400 uppercase tracking-widest text-center truncate">THÁNG</span>
+                      <FastInput type="number" min="1" max="12" value={month} onChange={(e: any) => setMonth(e.target.value)} className="w-full px-1 py-1.5 rounded-lg border border-slate-200/80 focus:border-amber-400 focus:outline-none focus:ring-1 focus:ring-amber-500 bg-white font-mono font-bold text-slate-800 text-center text-[16px] md:text-sm shadow-sm" />
+                   </label>
+                   <label className="flex flex-col gap-1 w-full relative col-span-1 md:col-span-1">
+                      <span className="text-[9px] font-bold text-slate-400 uppercase tracking-widest text-center truncate">NĂM</span>
+                      <FastInput type="number" min="1900" max="2100" value={year} onChange={(e: any) => setYear(e.target.value)} className="w-full px-1 py-1.5 rounded-lg border border-slate-200/80 focus:border-amber-400 focus:outline-none focus:ring-1 focus:ring-amber-500 bg-white font-mono font-bold text-slate-800 text-center text-[16px] md:text-sm shadow-sm" />
+                   </label>
+                   <label className="flex flex-col gap-1 w-full relative col-span-1 md:col-span-1">
+                      <span className="text-[9px] font-bold text-amber-500/80 uppercase tracking-widest text-center truncate">GIỜ</span>
+                      <FastInput type="number" min="0" max="23" value={hourStr} onChange={(e: any) => setHourStr(e.target.value)} className="w-full px-1 py-1.5 rounded-lg border border-amber-200 focus:border-amber-400 focus:outline-none focus:ring-1 focus:ring-amber-500 bg-amber-50 text-amber-800 font-mono font-bold text-center text-[16px] md:text-sm shadow-sm" />
+                   </label>
+                 </>
+               ) : (
+                 <>
+                   <label className="flex flex-col gap-1 w-full relative col-span-1 md:col-span-1">
+                      <span className="text-[9px] font-bold text-slate-500/80 uppercase tracking-widest text-center truncate">NGÀY(AL)</span>
+                      <FastInput type="number" min="1" max="30" value={lDay} onChange={(e: any) => setLDay(e.target.value)} className="w-full px-1 py-1.5 rounded-lg border border-slate-200/80 focus:border-slate-400 focus:outline-none focus:ring-1 focus:ring-slate-400 bg-white font-mono font-bold text-slate-700 text-center text-[16px] md:text-sm shadow-sm" />
+                   </label>
+                   <label className="flex flex-col gap-1 w-full relative col-span-1 md:col-span-1">
+                      <div className="flex items-center justify-center gap-0.5">
+                        <span className="text-[9px] font-bold text-slate-500/80 uppercase tracking-widest truncate">THÁNG(AL)</span>
+                        <input type="checkbox" id="leap-check" checked={lIsLeap} onChange={e => setLIsLeap(e.target.checked)} className="w-2.5 h-2.5" title="Tháng nhuận?" />
                       </div>
-                      
-                      <div className="mt-auto">
-                          <input type="text" placeholder="Tên lá số / Ghi chú để lưu..." value={chartName} onChange={e => setChartName(e.target.value)} className="w-full px-3 py-2 md:py-3 rounded-xl border border-slate-200/80 hover:border-slate-300 focus:outline-none focus:ring-1 focus:ring-amber-500 bg-white font-medium text-slate-700 text-[16px] md:text-sm shadow-sm transition-all" />
-                      </div>
-                   </div>
-               </div>
+                      <FastInput type="number" min="1" max="12" value={lMonth} onChange={(e: any) => setLMonth(e.target.value)} className="w-full px-1 py-1.5 rounded-lg border border-slate-200/80 focus:border-slate-400 focus:outline-none focus:ring-1 focus:ring-slate-400 bg-white font-mono font-bold text-slate-700 text-center text-[16px] md:text-sm shadow-sm" />
+                   </label>
+                   <label className="flex flex-col gap-1 w-full relative col-span-1 md:col-span-1">
+                      <span className="text-[9px] font-bold text-slate-500/80 uppercase tracking-widest text-center truncate">NĂM(AL)</span>
+                      <FastInput type="number" min="1900" max="2100" value={lYear} onChange={(e: any) => setLYear(e.target.value)} className="w-full px-1 py-1.5 rounded-lg border border-slate-200/80 focus:border-slate-400 focus:outline-none focus:ring-1 focus:ring-slate-400 bg-white font-mono font-bold text-slate-700 text-center text-[16px] md:text-sm shadow-sm" />
+                   </label>
+                   <label className="flex flex-col gap-1 w-full relative col-span-1 md:col-span-1">
+                      <span className="text-[9px] font-bold text-slate-500/80 uppercase tracking-widest text-center truncate">GIỜ</span>
+                      <FastInput type="number" min="0" max="23" value={hourStr} onChange={(e: any) => setHourStr(e.target.value)} className="w-full px-1 py-1.5 rounded-lg border border-slate-200/80 focus:border-slate-400 focus:outline-none focus:ring-1 focus:ring-slate-400 bg-white font-mono font-bold text-slate-700 text-center text-[16px] md:text-sm shadow-sm" />
+                   </label>
+                 </>
+               )}
 
+               <label className="flex flex-col gap-1 w-full col-span-2 md:col-span-1">
+                  <span className="text-[9px] font-bold text-slate-400 uppercase tracking-widest text-center">GIỚI TÍNH</span>
+                  <select value={gender} onChange={e => setGender(e.target.value as any)} className="w-full px-1 py-1.5 rounded-lg border border-slate-200/80 focus:border-amber-400 focus:outline-none focus:ring-1 focus:ring-amber-500 bg-white font-bold text-slate-700 text-[16px] md:text-sm shadow-sm text-center">
+                     <option value="M">Nam</option>
+                     <option value="F">Nữ</option>
+                  </select>
+               </label>
+               <label className="flex flex-col gap-1 w-full col-span-2 md:col-span-1 relative">
+                  <span className="text-[9px] font-bold text-amber-600 uppercase tracking-widest text-center">NĂM XEM</span>
+                  <input type="number" min="1900" max="2100" value={viewingYear} onChange={e => setViewingYear(e.target.value)} className="w-full px-1 py-1.5 rounded-lg border border-amber-300 focus:outline-none focus:ring-1 focus:ring-amber-500 bg-white font-bold text-amber-700 text-center text-[16px] md:text-sm shadow-sm" />
+               </label>
+               <div className="col-span-4 md:col-span-2 flex flex-col justify-end mt-1 md:mt-0">
+                  <input type="text" placeholder="Tên lá số / Ghi chú để lưu..." value={chartName} onChange={e => setChartName(e.target.value)} className="w-full px-2 py-1.5 rounded-lg border border-slate-200/80 focus:outline-none focus:ring-1 focus:ring-amber-500 bg-white font-medium text-slate-700 text-[16px] md:text-sm shadow-sm" />
+               </div>
             </div>
              
-             <div className="flex flex-col md:flex-row gap-2 mt-1 border-t border-slate-100/60 pt-2 w-full">
-               <div className="flex gap-2 w-full justify-end">
+             <div className="flex gap-2 w-full justify-between mt-0.5">
+               <div className="flex gap-1.5">
                  <button 
                     onClick={() => setShowSettings(!showSettings)} 
                     title="Tuỳ chọn hiển thị"
-                    className={`p-2 px-3 rounded-xl transition-all shadow-sm flex items-center justify-center gap-2 border ${showSettings ? 'bg-slate-200 text-slate-800 border-slate-300' : 'bg-white text-slate-600 border-slate-200 hover:bg-slate-50'}`}
+                    className={`p-1.5 px-3 rounded-lg transition-all shadow-sm flex items-center justify-center border ${showSettings ? 'bg-slate-200 text-slate-800 border-slate-300' : 'bg-white text-slate-600 border-slate-200 hover:bg-slate-50'}`}
                  >
                    <Settings className="w-4 h-4" />
                  </button>
-                 <button onClick={handleSave} title="Lưu lá số" className="p-2 px-4 bg-slate-800 text-white rounded-xl hover:bg-slate-900 transition-colors shrink-0 flex items-center justify-center shadow-sm">
+                 <button 
+                    onClick={() => setShowSavedList(!showSavedList)}
+                    className={`p-1.5 px-3 rounded-lg transition-all shadow-sm flex items-center justify-center border ${showSavedList ? 'bg-rose-50 text-rose-600 border-rose-200' : 'bg-white text-slate-600 border-slate-200 hover:bg-slate-50'}`}
+                 >
+                    {showSavedList ? <X className="w-4 h-4" /> : <List className="w-4 h-4" />}
+                 </button>
+               </div>
+
+               <div className="flex gap-1.5 flex-1 justify-end">
+                 <button onClick={handleSave} title="Lưu lá số" className="px-3 py-1.5 bg-slate-800 text-white rounded-lg hover:bg-slate-900 transition-colors flex items-center justify-center shadow-sm">
                    <Save className="w-4 h-4" />
                  </button>
                  <button 
                     onClick={handleGenerate}
-                    className="flex-1 md:flex-none px-6 py-2 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-white font-black rounded-xl shadow-md hover:shadow-lg hover:shadow-amber-500/20 transition-all active:scale-[0.98] uppercase tracking-widest text-xs flex items-center justify-center gap-2 border border-amber-600"
+                    className="flex-1 max-w-[160px] md:max-w-xs px-4 py-1.5 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-white font-black rounded-lg shadow-md active:scale-[0.98] uppercase tracking-widest text-xs flex items-center justify-center gap-2 border border-amber-600"
                  >
                     <Compass className="w-4 h-4 drop-shadow-sm" /> An Sao
-                 </button>
-                 <button 
-                    onClick={() => setShowSavedList(!showSavedList)}
-                    className={`p-2 px-4 rounded-xl transition-all shadow-sm flex items-center justify-center border ${showSavedList ? 'bg-rose-50 text-rose-600 border-rose-200 hover:bg-rose-100' : 'bg-white text-slate-600 border-slate-200 hover:bg-slate-50'}`}
-                 >
-                    {showSavedList ? <X className="w-4 h-4" /> : <List className="w-4 h-4" />}
                  </button>
                </div>
              </div>
@@ -766,7 +749,7 @@ ${cauTrucInstruction}
                           {msg.text}
                         </div>
                       ) : (
-                        <div className="bg-white text-slate-800 px-3 py-2.5 sm:px-4 sm:py-3 rounded-2xl rounded-tl-sm border border-slate-100 w-full shadow-sm relative group markdown-content [&_p]:text-[11px] [&_p]:sm:text-[11px] [&_li]:text-[11px] [&_li]:sm:text-[11px] [&_h1]:text-[12px] [&_h2]:text-[11.5px] [&_h3]:text-[11px] [&_p]:mb-2 [&_ul]:mb-2 [&_ol]:mb-2 [&_ul]:list-disc [&_ul]:pl-4 [&_ol]:list-decimal [&_ol]:pl-4 [&_strong]:font-bold [&_strong]:text-slate-900 [&_h1]:font-black [&_h2]:font-black [&_h3]:font-black [&_h1]:text-black [&_h2]:text-black [&_h3]:text-black [&_h1]:mb-2 [&_h2]:mb-1 [&_h3]:mb-1 leading-relaxed">
+                        <div className="bg-white text-slate-800 px-3 py-2.5 sm:px-4 sm:py-3 rounded-2xl rounded-tl-sm border border-slate-100 w-full shadow-sm relative group markdown-content [&_p]:text-[13px] [&_p]:sm:text-[13px] [&_li]:text-[13px] [&_li]:sm:text-[13px] [&_h1]:text-[15px] [&_h2]:text-[14px] [&_h3]:text-[13px] [&_p]:mb-2 [&_ul]:mb-2 [&_ol]:mb-2 [&_ul]:list-disc [&_ul]:pl-4 [&_ol]:list-decimal [&_ol]:pl-4 [&_strong]:font-bold [&_strong]:text-slate-900 [&_h1]:font-black [&_h2]:font-black [&_h3]:font-black [&_h1]:text-black [&_h2]:text-black [&_h3]:text-black [&_h1]:mb-2 [&_h2]:mb-1 [&_h3]:mb-1 leading-relaxed">
                           {msg.text && (
                             <div className="absolute top-2 right-2 flex items-center gap-1 transition-all">
                               <button

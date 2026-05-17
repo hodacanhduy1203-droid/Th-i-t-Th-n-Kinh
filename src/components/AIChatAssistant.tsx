@@ -8,6 +8,8 @@ import { GEMINI_MODEL } from '../constants/ai';
 import Markdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import { setupSpeechSynthesis, cancelSpeech, speakText as speakTextHelper } from '../lib/speech';
+import { db, auth } from '../services/firebaseService';
+import { collection, query, where, orderBy, getDocs, addDoc, serverTimestamp, doc, deleteDoc } from 'firebase/firestore';
 
 interface Message {
   id: string;
@@ -40,8 +42,32 @@ export const AIChatAssistant: React.FC<AIChatAssistantProps> = ({ userProfile, o
 
   useEffect(() => {
     setupSpeechSynthesis();
+    
+    if (auth.currentUser) {
+        loadHistory();
+    }
+
     return () => cancelSpeech();
-  }, []);
+  }, [auth.currentUser]);
+
+  const loadHistory = async () => {
+    if (!auth.currentUser) return;
+    const q = query(
+        collection(db, 'chat_history'),
+        where('userId', '==', auth.currentUser.uid),
+        orderBy('createdAt', 'asc')
+    );
+    const querySnapshot = await getDocs(q);
+    const loadedMessages: Message[] = querySnapshot.docs.map(doc => ({
+        id: doc.id,
+        role: doc.data().role,
+        text: doc.data().text
+    }));
+    setMessages([
+        { id: '1', role: 'assistant', text: 'Xin chào, tôi là **Chuyên gia phong thủy AI**. Tôi được tích hợp sức mạnh của toàn bộ công cụ trong ứng dụng (Xem Ngày, Tử Vi, Kỳ Môn, Thái Ất). Bạn muốn hỏi về vấn đề gì?' },
+        ...loadedMessages
+    ]);
+  };
 
   const speakText = (text: string, id: string) => {
     if (speakingId === id) {
@@ -91,6 +117,22 @@ export const AIChatAssistant: React.FC<AIChatAssistantProps> = ({ userProfile, o
         text: response
       };
       setMessages(prev => [...prev, assistantMessage]);
+
+      // Save to Firestore
+      if (auth.currentUser) {
+        await addDoc(collection(db, 'chat_history'), {
+            userId: auth.currentUser.uid,
+            role: 'user',
+            text: userMessage.text,
+            createdAt: serverTimestamp()
+        });
+        await addDoc(collection(db, 'chat_history'), {
+            userId: auth.currentUser.uid,
+            role: 'assistant',
+            text: assistantMessage.text,
+            createdAt: serverTimestamp()
+        });
+      }
     } catch (error: any) {
       console.error(error);
       const errorMsg = handleAIError(error);
@@ -107,9 +149,18 @@ export const AIChatAssistant: React.FC<AIChatAssistantProps> = ({ userProfile, o
     }
   };
 
-  const clearChat = () => {
+  const clearChat = async () => {
     geminiService.clearHistory();
     setMessages([{ id: '1', role: 'assistant', text: 'Hệ thống đã được làm mới. Bạn muốn tìm hiểu về quẻ dịch hay phong thủy nào tiếp theo?' }]);
+    
+    // Delete from Firestore
+    if (auth.currentUser) {
+        const q = query(collection(db, 'chat_history'), where('userId', '==', auth.currentUser.uid));
+        const querySnapshot = await getDocs(q);
+        querySnapshot.forEach(async (doc) => {
+            await deleteDoc(doc.ref);
+        });
+    }
   };
 
   return (

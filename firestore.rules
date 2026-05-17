@@ -51,6 +51,13 @@ service cloud.firestore {
              data.role in ['admin', 'super-admin'];
     }
 
+    function isValidChatMessage(data) {
+      return data.userId is string && data.userId.size() <= 128 &&
+             data.role in ['user', 'assistant'] &&
+             data.text is string && data.text.size() <= 10000 &&
+             data.createdAt is timestamp;
+    }
+
     // Collections
     match /admins/{userId} {
       allow get: if isAdmin();
@@ -84,6 +91,12 @@ service cloud.firestore {
                       incoming().createdAt == existing().createdAt;
 
       allow delete: if isAdmin();
+    }
+
+    match /chat_history/{messageId} {
+      allow get, list: if isSignedIn() && resource.data.userId == request.auth.uid;
+      allow create: if isSignedIn() && isValidChatMessage(incoming()) && incoming().userId == request.auth.uid;
+      allow update, delete: if isSignedIn() && existing().userId == request.auth.uid && incoming().userId == request.auth.uid;
     }
   }
 }

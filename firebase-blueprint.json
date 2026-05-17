@@ -24,6 +24,18 @@
         "role": { "type": "string", "enum": ["admin", "super-admin"] }
       },
       "required": ["email", "role"]
+    },
+    "chat_message": {
+      "title": "Chat Message",
+      "description": "Individual message in a chat history",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string", "description": "The user ID" },
+        "role": { "type": "string", "enum": ["user", "assistant"], "description": "Who sent the message" },
+        "text": { "type": "string", "description": "The message text" },
+        "createdAt": { "type": "string", "format": "date-time", "description": "When the message was sent" }
+      },
+      "required": ["userId", "role", "text", "createdAt"]
     }
   },
   "firestore": {
@@ -34,6 +46,10 @@
     "admins/{userId}": {
       "schema": "admin",
       "description": "Collection of admin users"
+    },
+    "chat_history/{messageId}": {
+      "schema": "chat_message",
+      "description": "Collection of chat messages"
     }
   }
 }

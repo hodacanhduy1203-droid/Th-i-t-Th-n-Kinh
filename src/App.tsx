@@ -6917,6 +6917,15 @@ Yêu cầu: Hãy viết một đoạn CHỈ 2 CÂU cực kỳ súc tích: Câu 1
                                 lower={qMainLower}
                                 title="Quẻ Chính"
                                 movingLines={currentMoving}
+                                interactive={true}
+                                onLineClick={(lineNum) => {
+                                  setManualMovingLines((prev) => {
+                                    const n = new Set(prev);
+                                    if (n.has(lineNum)) n.delete(lineNum);
+                                    else n.add(lineNum);
+                                    return n;
+                                  });
+                                }}
                                 dayChi={
                                   manualCastLunarInfo?.lunarDayName?.split(
                                     " ",
@@ -7177,6 +7186,19 @@ Yêu cầu: Hãy viết một đoạn CHỈ 2 CÂU cực kỳ súc tích: Câu 1
                                   lower={qMainLower}
                                   title="Quẻ Chính"
                                   movingLines={currentMoving}
+                                  interactive={true}
+                                  onLineClick={(lineNum) => {
+                                    const idx = lineNum - 1;
+                                    setLinhUngLines((prev) => {
+                                      const n = [...prev];
+                                      const val = n[idx];
+                                      if (val === 6) n[idx] = 8;
+                                      else if (val === 8) n[idx] = 6;
+                                      else if (val === 7) n[idx] = 9;
+                                      else if (val === 9) n[idx] = 7;
+                                      return n;
+                                    });
+                                  }}
                                   dayChi={
                                     linhUngDateInfo?.lunarDayName?.split(" ")[1]
                                   }
